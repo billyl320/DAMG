@@ -1,0 +1,6398 @@
+
+R version 3.4.4 (2018-03-15) -- "Someone to Lean On"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Previously saved workspace restored]
+
+> #example from data.tree website
+> #https://cran.r-project.org/web/packages/data.tree/vignettes/applications.html
+> 
+> rm(list=ls())
+> 
+> 
+>   val = 0.41
+> 
+>   print('Value of')
+[1] "Value of"
+>   print(val)
+[1] 0.41
+> 
+>   set.seed(1382)
+> 
+>   source('svm_tree_val.r')
+> 
+>   ##################
+>   #loading data
+>   ##################
+> 
+>   #cleaning data for analysis
+> 
+>   #round or circle
+>   circ1 <-read.table("data_txt/round1.txt", sep=",", header=TRUE)
+>   circ2 <-read.table('data_txt/round2.txt', sep=",", header=TRUE)
+>   circ3 <-read.table("data_txt/round3.txt", sep=",", header=TRUE)
+>   circ4 <-read.table("data_txt/round4.txt", sep=",", header=TRUE)
+>   circ5 <-read.table("data_txt/round5.txt", sep=",", header=TRUE)
+> 
+>   circ<-rbind(circ1, circ2, circ3, circ4, circ5)
+> 
+>   circ1_shapes <-read.table("data_txt/round1_SHAPES.txt", sep=",", header=TRUE)
+>   circ2_shapes <-read.table('data_txt/round2_SHAPES.txt', sep=",", header=TRUE)
+>   circ3_shapes <-read.table("data_txt/round3_SHAPES.txt", sep=",", header=TRUE)
+>   circ4_shapes <-read.table("data_txt/round4_SHAPES.txt", sep=",", header=TRUE)
+>   circ5_shapes <-read.table("data_txt/round5_SHAPES.txt", sep=",", header=TRUE)
+> 
+>   circ_shapes<-rbind(circ1_shapes, circ2_shapes, circ3_shapes,
++                      circ4_shapes, circ5_shapes)
+> 
+>   #capsule
+>   caps <-read.table("data_txt/caps.txt", sep=",", header=TRUE)
+> 
+>   caps_shapes <-read.table("data_txt/caps_SHAPES.txt", sep=",", header=TRUE)
+> 
+>   #diamond
+>   diam <-read.table("data_txt/diam.txt", sep=",", header=TRUE)
+> 
+>   diam_shapes <-read.table("data_txt/diam_SHAPES.txt", sep=",", header=TRUE)
+> 
+>   #hexagon
+>   hex1 <-read.table("data_txt/hex.txt", sep=",", header=TRUE)
+>   hex2 <-read.table("data_txt/reg_hex.txt", sep=",", header=TRUE)
+> 
+>   hex<-rbind(hex1, hex2)
+> 
+>   hex_shapes1 <-read.table("data_txt/hex_SHAPES.txt", sep=",", header=TRUE)
+>   hex_shapes2 <-read.table("data_txt/reg_hex_SHAPES.txt", sep=",", header=TRUE)
+> 
+>   hex_shapes<-rbind(hex_shapes1, hex_shapes2)
+> 
+> 
+>   #oval
+>   oval1 <-read.table("data_txt/oval1.txt", sep=",", header=TRUE)
+>   oval2 <-read.table("data_txt/oval2.txt", sep=",", header=TRUE)
+>   oval3 <-read.table("data_txt/oval3.txt", sep=",", header=TRUE)
+> 
+>   oval<-rbind(oval1, oval2, oval3)
+> 
+>   oval1_SHAPES <-read.table("data_txt/oval1_SHAPES.txt", sep=",", header=TRUE)
+>   oval2_SHAPES <-read.table("data_txt/oval2_SHAPES.txt", sep=",", header=TRUE)
+>   oval3_SHAPES <-read.table("data_txt/oval3_SHAPES.txt", sep=",", header=TRUE)
+> 
+>   oval_shapes<-rbind(oval1_SHAPES, oval2_SHAPES, oval3_SHAPES)
+> 
+>   #pentagon
+>   pent1 <-read.table("data_txt/pent.txt", sep=",", header=TRUE)
+>   pent2 <-read.table("data_txt/reg_pent.txt", sep=",", header=TRUE)
+> 
+>   pent<-rbind(pent1, pent2)
+> 
+>   pent_shapes1 <-read.table("data_txt/pent_SHAPES.txt", sep=",", header=TRUE)
+>   pent_shapes2 <-read.table("data_txt/reg_pent_SHAPES.txt", sep=",", header=TRUE)
+> 
+>   pent_shapes<-rbind(pent_shapes1, pent_shapes2)
+> 
+>   #rectangle
+>   rect <-read.table("data_txt/rect.txt", sep=",", header=TRUE)
+> 
+>   rect_shapes <-read.table("data_txt/rect_SHAPES.txt", sep=",", header=TRUE)
+> 
+>   #semi-circle
+>   sc <-read.table("data_txt/sc.txt", sep=",", header=TRUE)
+> 
+>   sc_shapes <-read.table("data_txt/sc_SHAPES.txt", sep=",", header=TRUE)
+> 
+>   #square
+>   squ <-read.table("data_txt/squ.txt", sep=",", header=TRUE)
+> 
+>   squ_shapes <-read.table("data_txt/squ_SHAPES.txt", sep=",", header=TRUE)
+> 
+>   #tear
+>   tear <-read.table("data_txt/tear.txt", sep=",", header=TRUE)
+> 
+>   tear_shapes <-read.table("data_txt/tear_SHAPES.txt", sep=",", header=TRUE)
+> 
+>   #trapezoid
+>   trap <-read.table("data_txt/trap.txt", sep=",", header=TRUE)
+> 
+>   trap_shapes <-read.table("data_txt/trap_SHAPES.txt", sep=",", header=TRUE)
+> 
+>   #triangle
+>   tri <-read.table("data_txt/tri.txt", sep=",", header=TRUE)
+> 
+>   tri_shapes <-read.table("data_txt/tri_SHAPES.txt", sep=",", header=TRUE)
+> 
+> 
+>   #cleaning data for ggplot2 and analysis
+>   labs<-as.factor(c(rep(1, dim(caps)[1]),
++                     rep(2, dim(diam)[1]),
++                     rep(3, dim(hex)[1]),
++                     rep(4, dim(oval)[1]),
++                     rep(5, dim(pent)[1]), rep(6, dim(rect)[1]),
++                     rep(7, dim(circ)[1]),
++                     rep(8, dim(sc)[1]),
++                     rep(9, dim(squ)[1]), rep(10, dim(tear)[1]),
++                     rep(11, dim(trap)[1]),rep(12, dim(tri)[1])    ) )
+> 
+>   labs2<-as.factor(c(rep("Capsule", dim(caps)[1]),
++                     rep("Diamond", dim(diam)[1]),
++                     rep("Hexagon", dim(hex)[1]),
++                     rep("Oval", dim(oval)[1]),
++                     rep("Pentagon", dim(pent)[1]),
++                     rep("Rectangle", dim(rect)[1]), rep("Round", dim(circ)[1]),
++                     rep("Semi-Circle", dim(sc)[1]), rep("Square", dim(squ)[1]),
++                     rep("Tear", dim(tear)[1]), rep("Trapezoid", dim(trap)[1]),
++                     rep("Triangle", dim(tri)[1])    ) )
+> 
+>   #complete data set
+> 
+>   temp<-rbind(caps, diam, hex, oval,
++               pent, rect, circ, sc,
++               squ, tear, trap, tri
++               )
+> 
+>   temp_shapes<-rbind(caps_shapes, diam_shapes, hex_shapes, oval_shapes,
++               pent_shapes, rect_shapes, circ_shapes, sc_shapes,
++               squ_shapes, tear_shapes, trap_shapes, tri_shapes
++               )
+> 
+>   sp<-temp$white/(temp$white+temp$black)
+> 
+>   #fix mistake
+>   svns<-which(labs==7)
+> 
+>   #boxplot(sp[svns])
+>   #table(round(sp[svns], 2))
+>   #pi/4
+> 
+>   look_round<-which(sp[svns]<0.70)
+> 
+>   labs[svns[look_round]]=4
+>   labs2[svns[look_round]]="Oval"
+> 
+>   print('##################')
+[1] "##################"
+>   print('# first run')
+[1] "# first run"
+>   print('##################')
+[1] "##################"
+> 
+>   mydata<-cbind(labs, sp, temp, temp_shapes)
+> 
+>   cols_keep<-c(1:6, 10, 11)
+> 
+>   mydata<-mydata[,cols_keep]
+>   colnames(mydata)<-c("labs_svm", "SP",
++                       "White", "Black", "Circularity",
++                       "Eccentricity", "White_Box", "Black_Box"
++                       )
+> 
+> 
+>   #sample from round, oval, caps, and rectangle
+>   keep_rect<-which( ( labs== 6) )
+>   keep_circ<-which( ( labs== 7) )
+>   keep_cap<-which( ( labs== 1) )
+>   keep_oval<-which( ( labs== 4) )
+> 
+>   ref_tab_counts<-table(labs)
+> 
+>   cap_rand<-sample(keep_cap, ref_tab_counts[1])
+>   train_01<-cap_rand[1:(ref_tab_counts[1]/2)]
+>   oval_rand<-sample(keep_oval, ref_tab_counts[4])
+>   train_4<-oval_rand[1:(ref_tab_counts[4]/2)]
+> 
+>   rect_rand<-sample(keep_rect, 6)
+>   train_6<-rect_rand[1:3]
+>   circ_rand<-sample(keep_circ, ref_tab_counts[7])
+>   train_7<-circ_rand[1:(ref_tab_counts[7]/2)]
+> 
+>   #sample from other
+>   keep_diam<-which( ( labs== 2) )
+>   keep_hex<-which( ( labs== 3) )
+>   keep_pent<-which( ( labs== 5) )
+>   keep_sc<-which( ( labs== 8) )
+>   keep_squ<-which( ( labs== 9) )
+>   keep_tear<-which( ( labs== 10) )
+>   keep_trap<-which( ( labs== 11) )
+>   keep_tri<-which( ( labs== 12) )
+> 
+>   diam_rand<-sample(keep_diam, 12)
+>   train_2<-diam_rand[1:6]
+>   hex_rand_reg<-sample(keep_hex[1:6], 6)
+>   hex_rand_other<-sample(keep_hex[7:8], 2)
+>   hex_rand<-c(hex_rand_reg[1:3], hex_rand_other[1],
++               hex_rand_reg[4:6], hex_rand_other[2])
+>   train_3<-hex_rand[1:4]
+> 
+>   pent_rand_reg<-sample(keep_pent[3:12], 10)
+>   pent_rand_other<-sample(keep_pent[1:2], 2)
+>   pent_rand<-c(pent_rand_reg[1:5], pent_rand_other[1],
++               pent_rand_reg[6:10], pent_rand_other[2])
+>   train_5<-pent_rand[1:6]
+>   sc_rand<-sample(keep_sc, 4)
+>   train_8<-sc_rand[1:2]
+> 
+>   squ_rand<-sample(keep_squ, 8)
+>   train_9<-squ_rand[1:4]
+>   tear_rand<-sample(keep_tear, 10)
+>   train_10<-tear_rand[1:5]
+> 
+>   trap_rand<-sample(keep_trap, 4)
+>   train_11<-trap_rand[1:2]
+>   tri_rand<-sample(keep_tri, 12)
+>   train_12<-tri_rand[1:6]
+> 
+> 
+>   train_vals<-c(train_01, train_2, train_3, train_4,
++                 train_5, train_6, train_7, train_8,
++                 train_9, train_10, train_11, train_12)
+> 
+>   train_vec<-rep(FALSE, length(labs))
+>   train_vec[train_vals]<-TRUE
+> 
+>   #cleanign and setup of data
+>   data<- mydata
+>   train<-train_vec
+> 
+>   labs<-data[,1]
+>   data<-data[,-1]
+>   #classes to categorize must be the last column
+>   data<-cbind(data, labs)
+>   #putting training values as first column
+>   data<-cbind(train, data)
+> 
+>   ############################
+>   #doing initial meta-class
+>   ############################
+> 
+>   data<-data[,-9]
+> 
+>   #getting training values
+>   t_f<-data[,1]
+>   train<-which(t_f==TRUE)
+>   #remove TRUE/FALSE from data
+>   #keep this to ease creation of results later
+>   data2 = data
+>   data = data[,-1]
+> 
+>   #initializing some needed vectors
+>   errors_train<-c()
+>   errors_valid<-c()
+> 
+>   size_1<-c()
+>   size_0<-c()
+> 
+>   size_1_counts<-c()
+>   size_0_counts<-c()
+>   diff_counts<-c()
+> 
+>   #for picking variables
+>   dist1_e_feat<-c()
+>   dist2_e_feat<-c()
+> 
+>   #for overall
+>   dist1_e<-c()
+>   dist2_e<-c()
+> 
+>   dist1_mink_3<-c()
+>   dist2_mink_3<-c()
+> 
+>   #finding all possible combinations of groups of classes
+>   numb = length(table(labs))
+>   outcomes = c(0,1)
+>   l = rep(list(outcomes), numb)
+>   combos = expand.grid( l )
+> 
+>   #remove last and first which are all one class
+>   combos = combos[-1,]
+>   last = dim(combos)[1]
+>   last2 = last-1
+>   combos = combos[1:last2, ]
+> 
+>   if(numb==2){
++ 
++     m=1
++ 
++   }else{
++ 
++     m = dim(combos)[1]/2
++ 
++   }
+> 
+>   best<-c()
+>   relab<-c(1:10)
+>   errors_train= 0
+>   errors_valid= 0
+> 
+>   errors_train2= 0
+>   errors_valid2= 0
+>   error_vars_best = matrix(nrow=m, ncol=2, data=0)
+> 
+>   i=1
+>   m=1
+> 
+>   #get first possible combination
+>   relab = as.character(combos[i,])
+>   relab[4] = "1"
+>   relab[6] = "1"
+>   relab[7] = "1"
+>   #create loopkup table
+>   lookup <- data.frame(cbind(
++             names(table(labs)),
++             relab
++             ))
+>   #recode the labels to new combination
+>   labs_new = lookup$relab[match(labs, lookup$V1)]
+> 
+>   labs_svm<-as.numeric(labs_new)
+> 
+>   test<-as.data.frame(cbind(labs_svm[train], data[train,]) )
+>   colnames(test)[1]<-"labs_svm"
+> 
+>   valid<-as.data.frame(cbind(labs_svm[-train], data[-train,]) )
+>   colnames(valid)[1]<-"labs_svm"
+> 
+>   #getting counts
+>   lasso_labs = test[,1]
+>   change = which(lasso_labs==2)
+>   lasso_labs[change] = 0
+>   lasso_labs = test[,1]
+>   #getting class sizes
+>   size_1[i]<-var(table(labs[train[which(lasso_labs==1)] ] ))
+>   size_0[i]<-var(table(labs[train[which(lasso_labs==0)] ] ))
+> 
+>   #change NA's to 0's if a single class
+>   if(is.na(size_1[i]) ){
++ 
++     size_1[i]=0
++ 
++   }
+> 
+>   if(is.na(size_0[i]) ){
++ 
++     size_0[i]=0
++ 
++   }
+> 
+>   #doing all possible combinations of variables
+>   v <- dim(test)[2]-1
+>   var_combos<-t(combn(v, 2))+1
+>   ones<-which(test[,1]==1)
+>   twos<-which(test[,1]==2)
+> 
+>   for(j in 1:dim(var_combos)[1]){
++     keep<-c(1,var_combos[j,])
++ 
++     #keeping variables here
++     test2<-test[,keep]
++     valid2<-valid[,keep]
++ 
++     tune.out<-tune(svm, as.factor(labs_svm) ~.,
++               data=test2,
++               kernel='polynomial',
++               ranges=list(cost=c(1), coef0=c(1:3, 50), degree=c(1:3, 5)),
++               validation.x=valid2[,-1],
++               validation.y=as.factor(valid2[,1]),
++               tunecontrol = tune.control(sampling = "fix"))
++ 
++     ypred=predict(tune.out$best.model ,test2)
++     #table(predict=ypred, truth=test$labs_svm)
++     errors_train2[j] = mean(ypred== test2$labs_svm )
++ 
++     ypred=predict(tune.out$best.model ,valid2)
++     #table(predict=ypred, truth=test$labs_svm)
++     errors_valid2[j] = mean(ypred== valid2$labs_svm )
++ 
++     temp_mat<-test2
++     temp_mat[,1]<- (temp_mat[,1]-mean(temp_mat[,1]))/sd(temp_mat[,1])
++     temp_mat[,2]<- (temp_mat[,2]-mean(temp_mat[,2]))/sd(temp_mat[,2])
++ 
++     dist1_e_feat[j]<-mean(dist(temp_mat[ones,-1 ], method="euclidean"))
++     dist2_e_feat[j]<-mean(dist(test2[twos,-1 ], method="euclidean"))
++ 
++   }
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+> 
+>   c_b<-which(errors_train2==max(errors_train2))
+>   abs_diff_dist<-abs(dist1_e_feat-dist2_e_feat)
+>   c_b_choice<-which(abs_diff_dist[c_b]==min(abs_diff_dist[c_b]))
+> 
+>   errors_train[i]<-errors_train2[c_b[c_b_choice]]
+>   errors_valid[i]<-errors_valid2[c_b[c_b_choice]]
+>   error_vars_best[i,]<-var_combos[c_b[c_b_choice],]
+> 
+>   ones<-which(test[,1]==1)
+>   twos<-which(test[,1]==2)
+>   #euclidean
+>   dist1_e[i]<-mean(dist(test[ones,error_vars_best[i,]], method="euclidean" ))
+>   dist2_e[i]<-mean(dist(test[twos,error_vars_best[i,]], method="euclidean" ))
+> 
+>   dist1_mink_3[i]<-mean(dist(test[ones,error_vars_best[i,]],
++                           method="minkowski", p=3))
+>   dist2_mink_3[i]<-mean(dist(test[twos,error_vars_best[i,]],
++                           method="minkowski", p=3 ))
+> 
+>   errors<-cbind(errors_train, errors_valid)
+>   colnames(errors)<-c("Error_train", "Error_valid")
+> 
+>   #finding which errors for training and valid have perfect results
+>   best<- which( (errors_train==1) )
+>   print(best)
+[1] 1
+>   print(errors)
+     Error_train Error_valid
+[1,]           1           1
+> 
+>   variables<- colnames(data[,error_vars_best[best,]-1])
+>   variables
+[1] "SP"           "Eccentricity"
+> 
+> 
+>   #create first meta group of
+>   #round, capsule, oval and rectangle
+>   #vs.
+>   #else
+> 
+>   #cleanign and setup of data
+> 
+>   mydata<-cbind(labs, sp, temp, temp_shapes)
+> 
+>   cols_keep<-c(1:6, 10, 11)
+> 
+>   mydata<-mydata[,cols_keep]
+>   colnames(mydata)<-c("labs_svm", "SP",
++                       "White", "Black", "Circularity",
++                       "Eccentricity", "White_Box", "Black_Box"
++                       )
+> 
+> 
+>   train_vals<-c(train_01, train_2, train_3, train_4,
++                 train_5, train_6, train_7, train_8,
++                 train_9, train_10, train_11, train_12)
+> 
+>   train_vec<-rep(FALSE, length(labs))
+>   train_vec[train_vals]<-TRUE
+> 
+>   #cleanign and setup of data
+>   data<- mydata
+>   train<-train_vec
+> 
+> 
+>   labs<-as.numeric(data[,1])
+>   data<-data[,-1]
+>   #classes to categorize must be the last column
+>   data<-cbind(data, labs)
+>   #putting training values as first column
+>   data<-cbind(train, data)
+> 
+> 
+>   #########
+> 
+>   keep1<-which(labs==1)
+>   keep2<-which(labs==2)
+>   keep3<-which(labs==3)
+> 
+>   keep4<-which(labs==4)
+>   keep5<-which(labs==5)
+> 
+>   keep6<-which(labs==6)
+>   keep7<-which(labs==7)
+>   keep8<-which(labs==8)
+> 
+>   keep10<-which(labs==10)
+>   keep11<-which(labs==11)
+>   keep12<-which(labs==12)
+> 
+>   keep<-c(keep1, #capsule
++           keep4, #oval
++           keep6, #rect
++           keep7 #round
++           )
+> 
+> 
+>   data1<-data[keep,]
+> 
+>   tree1 <- Node$new("Capsule, Round, Oval, and Rectangle")
+>   TrainDMG(tree1, data1, val )
+[1] 1
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 2
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 3
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 4
+
+WARNING: reaching max number of iterations
+[1] 5
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 6
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 7
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 1
+[1] "1,4"
+[1] "6,7"
+[1] 1
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] "1"
+[1] "4"
+[1] 1
+
+WARNING: reaching max number of iterations
+[1] 1
+[1] "6"
+[1] "7"
+>   print(tree1, "TrainCount", "class1",
++               "class0", "trainError",
++               "validError", "variables",
++               "Cost", "Degree",  "coef0")
+                            levelName TrainCount class1 class0 trainError
+1 Capsule, Round, Oval, and Rectangle       1930                       NA
+2  ¦--1,4                                   1020      1      4  1.0000000
+3  ¦   ¦--1                                   NA                0.9939759
+4  ¦   °--4                                   NA                0.9941860
+5  °--6,7                                    910      6      7  1.0000000
+6      ¦--6                                   NA                1.0000000
+7      °--7                                   NA                1.0000000
+  validError      variables Cost Degree coef0
+1         NA                  NA     NA    NA
+2  1.0000000 SP,Circularity    1      3    50
+3  0.9939759       SP,Black    1      5     1
+4  0.9767442       SP,Black    1      5     1
+5  1.0000000 SP,Circularity    1      3    50
+6  1.0000000 SP,Circularity    1      1     1
+7  1.0000000 SP,Circularity    1      1     1
+>   #export_graph(ToDiagrammeRGraph(tree1), "tree1_11_20_num1_0.41.pdf")
+> 
+>   #########
+> 
+>   data2<-data[-keep,]
+> 
+>   tree2 <- Node$new("Else")
+>   TrainDMG(tree2, data2, val )
+[1] 1
+[1] 2
+
+WARNING: reaching max number of iterations
+[1] 3
+
+WARNING: reaching max number of iterations
+[1] 4
+[1] 5
+[1] 6
+
+WARNING: reaching max number of iterations
+[1] 7
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 8
+[1] 9
+[1] 10
+
+WARNING: reaching max number of iterations
+[1] 11
+
+WARNING: reaching max number of iterations
+[1] 12
+[1] 13
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 14
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 15
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 16
+[1] 17
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 18
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 19
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 20
+[1] 21
+
+WARNING: reaching max number of iterations
+[1] 22
+
+WARNING: reaching max number of iterations
+[1] 23
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 24
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 25
+
+WARNING: reaching max number of iterations
+[1] 26
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 27
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 28
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 29
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 30
+[1] 31
+[1] 32
+[1] 33
+[1] 34
+
+WARNING: reaching max number of iterations
+[1] 35
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 36
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 37
+
+WARNING: reaching max number of iterations
+[1] 38
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 39
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 40
+[1] 41
+[1] 42
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 43
+
+WARNING: reaching max number of iterations
+[1] 44
+
+WARNING: reaching max number of iterations
+[1] 45
+[1] 46
+
+WARNING: reaching max number of iterations
+[1] 47
+
+WARNING: reaching max number of iterations
+[1] 48
+[1] 49
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 50
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 51
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 52
+
+WARNING: reaching max number of iterations
+[1] 53
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 54
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 55
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 56
+[1] 57
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 58
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 59
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 60
+
+WARNING: reaching max number of iterations
+[1] 61
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 62
+
+WARNING: reaching max number of iterations
+[1] 63
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 64
+[1] 65
+
+WARNING: reaching max number of iterations
+[1] 66
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 67
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 68
+
+WARNING: reaching max number of iterations
+[1] 69
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 70
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 71
+
+WARNING: reaching max number of iterations
+[1] 72
+[1] 73
+[1] 74
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 75
+[1] 76
+[1] 77
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 78
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 79
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 80
+[1] 81
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 82
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 83
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 84
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 85
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 86
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 87
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 88
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 89
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 90
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 91
+
+WARNING: reaching max number of iterations
+[1] 92
+[1] 93
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 94
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 95
+
+WARNING: reaching max number of iterations
+[1] 96
+[1] 97
+
+WARNING: reaching max number of iterations
+[1] 98
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 99
+
+WARNING: reaching max number of iterations
+[1] 100
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 101
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 102
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 103
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 104
+
+WARNING: reaching max number of iterations
+[1] 105
+[1] 106
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 107
+[1] 108
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 109
+[1] 110
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 111
+[1] 112
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 113
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 114
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 115
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 116
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 117
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 118
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 119
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 120
+
+WARNING: reaching max number of iterations
+[1] 121
+[1] 122
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 123
+
+WARNING: reaching max number of iterations
+[1] 124
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 125
+[1] 126
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 127
+[1] 1
+[1] "2,8,10,11"
+[1] "3,5,9,12"
+[1] 1
+[1] 2
+[1] 3
+[1] 4
+[1] 5
+[1] 6
+[1] 7
+[1] 1
+[1] "8,10"
+[1] "2,11"
+[1] 1
+[1] 1
+[1] "8"
+[1] "10"
+[1] 1
+[1] 1
+[1] "2"
+[1] "11"
+[1] 1
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 2
+[1] 3
+[1] 4
+[1] 5
+
+WARNING: reaching max number of iterations
+[1] 6
+[1] 7
+[1] 1
+[1] "3,5,9"
+[1] "12"
+[1] 1
+[1] 2
+[1] 3
+[1] 1
+[1] "3,5"
+[1] "9"
+[1] 1
+[1] 1
+[1] "3"
+[1] "5"
+>   print(tree2, "TrainCount", "class1",
++               "class0", "trainError",
++               "validError", "variables",
++               "Cost", "Degree",  "coef0")
+           levelName TrainCount class1 class0 trainError validError
+1  Else                      70                       NA         NA
+2   ¦--2,8,10,11             30                        1  1.0000000
+3   ¦   ¦--8,10              14      8     10          1  1.0000000
+4   ¦   ¦   ¦--8             NA                        1  1.0000000
+5   ¦   ¦   °--10            NA                        1  0.8000000
+6   ¦   °--2,11              16      2     11          1  1.0000000
+7   ¦       ¦--2             NA                        1  1.0000000
+8   ¦       °--11            NA                        1  1.0000000
+9   °--3,5,9,12              40                        1  1.0000000
+10      ¦--3,5,9             28                        1  1.0000000
+11      ¦   ¦--3,5           20      3      5          1  1.0000000
+12      ¦   ¦   ¦--3         NA                        1  1.0000000
+13      ¦   ¦   °--5         NA                        1  0.6666667
+14      ¦   °--9              8             9          1  1.0000000
+15      °--12                12            12          1  1.0000000
+                  variables Cost Degree coef0
+1                             NA     NA    NA
+2           SP,Eccentricity    1      3     1
+3  Circularity,Eccentricity    1      2     1
+4  Circularity,Eccentricity    1      2     1
+5  Circularity,Eccentricity    1      2     1
+6  Circularity,Eccentricity    1      2     1
+7  Circularity,Eccentricity    1      2     1
+8  Circularity,Eccentricity    1      2     1
+9           SP,Eccentricity    1      3     1
+10          SP,Eccentricity    1      1     1
+11 Circularity,Eccentricity    1      1     1
+12           SP,Circularity    1      2     3
+13           SP,Circularity    1      2     3
+14 Circularity,Eccentricity    1      1     1
+15          SP,Eccentricity    1      1     1
+>   #export_graph(ToDiagrammeRGraph(tree2), "tree2_11_20_num1_0.41.pdf")
+> 
+>   print('##################')
+[1] "##################"
+>   print('# 2nd run')
+[1] "# 2nd run"
+>   print('##################')
+[1] "##################"
+> 
+>   mydata<-cbind(labs, sp, temp, temp_shapes)
+> 
+>   cols_keep<-c(1:6, 10, 11)
+> 
+>   mydata<-mydata[,cols_keep]
+>   colnames(mydata)<-c("labs_svm", "SP",
++                       "White", "Black", "Circularity",
++                       "Eccentricity", "White_Box", "Black_Box"
++                       )
+> 
+> 
+>   #sample from round, oval, caps, and rectangle
+>   keep_rect<-which( ( labs== 6) )
+>   keep_circ<-which( ( labs== 7) )
+>   keep_cap<-which( ( labs== 1) )
+>   keep_oval<-which( ( labs== 4) )
+> 
+>   cap_rand<-sample(keep_cap, ref_tab_counts[1])
+>   train_01<-cap_rand[1:(ref_tab_counts[1]/2)]
+>   oval_rand<-sample(keep_oval, ref_tab_counts[4])
+>   train_4<-oval_rand[1:(ref_tab_counts[4]/2)]
+> 
+>   rect_rand<-sample(keep_rect, 6)
+>   train_6<-rect_rand[1:3]
+>   circ_rand<-sample(keep_circ, ref_tab_counts[7])
+>   train_7<-circ_rand[1:(ref_tab_counts[7]/2)]
+> 
+>   #sample from other
+>   keep_diam<-which( ( labs== 2) )
+>   keep_hex<-which( ( labs== 3) )
+>   keep_pent<-which( ( labs== 5) )
+>   keep_sc<-which( ( labs== 8) )
+>   keep_squ<-which( ( labs== 9) )
+>   keep_tear<-which( ( labs== 10) )
+>   keep_trap<-which( ( labs== 11) )
+>   keep_tri<-which( ( labs== 12) )
+> 
+>   diam_rand<-sample(keep_diam, 12)
+>   train_2<-diam_rand[1:6]
+>   hex_rand_reg<-sample(keep_hex[1:6], 6)
+>   hex_rand_other<-sample(keep_hex[7:8], 2)
+>   hex_rand<-c(hex_rand_reg[1:3], hex_rand_other[1],
++               hex_rand_reg[4:6], hex_rand_other[2])
+>   train_3<-hex_rand[1:4]
+> 
+>   pent_rand_reg<-sample(keep_pent[3:12], 10)
+>   pent_rand_other<-sample(keep_pent[1:2], 2)
+>   pent_rand<-c(pent_rand_reg[1:5], pent_rand_other[1],
++               pent_rand_reg[6:10], pent_rand_other[2])
+>   train_5<-pent_rand[1:6]
+>   sc_rand<-sample(keep_sc, 4)
+>   train_8<-sc_rand[1:2]
+> 
+>   squ_rand<-sample(keep_squ, 8)
+>   train_9<-squ_rand[1:4]
+>   tear_rand<-sample(keep_tear, 10)
+>   train_10<-tear_rand[1:5]
+> 
+>   trap_rand<-sample(keep_trap, 4)
+>   train_11<-trap_rand[1:2]
+>   tri_rand<-sample(keep_tri, 12)
+>   train_12<-tri_rand[1:6]
+> 
+> 
+>   train_vals<-c(train_01, train_2, train_3, train_4,
++                 train_5, train_6, train_7, train_8,
++                 train_9, train_10, train_11, train_12)
+> 
+>   train_vec<-rep(FALSE, length(labs))
+>   train_vec[train_vals]<-TRUE
+> 
+>   #cleanign and setup of data
+>   data<- mydata
+>   train<-train_vec
+> 
+>   labs<-data[,1]
+>   data<-data[,-1]
+>   #classes to categorize must be the last column
+>   data<-cbind(data, labs)
+>   #putting training values as first column
+>   data<-cbind(train, data)
+> 
+>   ############################
+>   #doing initial meta-class
+>   ############################
+> 
+>   data<-data[,-9]
+> 
+>   #getting training values
+>   t_f<-data[,1]
+>   train<-which(t_f==TRUE)
+>   #remove TRUE/FALSE from data
+>   #keep this to ease creation of results later
+>   data2 = data
+>   data = data[,-1]
+> 
+>   #initializing some needed vectors
+>   errors_train<-c()
+>   errors_valid<-c()
+> 
+>   size_1<-c()
+>   size_0<-c()
+> 
+>   size_1_counts<-c()
+>   size_0_counts<-c()
+>   diff_counts<-c()
+> 
+>   #for picking variables
+>   dist1_e_feat<-c()
+>   dist2_e_feat<-c()
+> 
+>   #for overall
+>   dist1_e<-c()
+>   dist2_e<-c()
+> 
+>   dist1_mink_3<-c()
+>   dist2_mink_3<-c()
+> 
+>   #finding all possible combinations of groups of classes
+>   numb = length(table(labs))
+>   outcomes = c(0,1)
+>   l = rep(list(outcomes), numb)
+>   combos = expand.grid( l )
+> 
+>   #remove last and first which are all one class
+>   combos = combos[-1,]
+>   last = dim(combos)[1]
+>   last2 = last-1
+>   combos = combos[1:last2, ]
+> 
+>   if(numb==2){
++ 
++     m=1
++ 
++   }else{
++ 
++     m = dim(combos)[1]/2
++ 
++   }
+> 
+>   best<-c()
+>   relab<-c(1:10)
+>   errors_train= 0
+>   errors_valid= 0
+> 
+>   errors_train2= 0
+>   errors_valid2= 0
+>   error_vars_best = matrix(nrow=m, ncol=2, data=0)
+> 
+>   i=1
+>   m=1
+> 
+>   #get first possible combination
+>   relab = as.character(combos[i,])
+>   relab[4] = "1"
+>   relab[6] = "1"
+>   relab[7] = "1"
+>   #create loopkup table
+>   lookup <- data.frame(cbind(
++             names(table(labs)),
++             relab
++             ))
+>   #recode the labels to new combination
+>   labs_new = lookup$relab[match(labs, lookup$V1)]
+> 
+>   labs_svm<-as.numeric(labs_new)
+> 
+>   test<-as.data.frame(cbind(labs_svm[train], data[train,]) )
+>   colnames(test)[1]<-"labs_svm"
+> 
+>   valid<-as.data.frame(cbind(labs_svm[-train], data[-train,]) )
+>   colnames(valid)[1]<-"labs_svm"
+> 
+>   #getting counts
+>   lasso_labs = test[,1]
+>   change = which(lasso_labs==2)
+>   lasso_labs[change] = 0
+>   lasso_labs = test[,1]
+>   #getting class sizes
+>   size_1[i]<-var(table(labs[train[which(lasso_labs==1)] ] ))
+>   size_0[i]<-var(table(labs[train[which(lasso_labs==0)] ] ))
+> 
+>   #change NA's to 0's if a single class
+>   if(is.na(size_1[i]) ){
++ 
++     size_1[i]=0
++ 
++   }
+> 
+>   if(is.na(size_0[i]) ){
++ 
++     size_0[i]=0
++ 
++   }
+> 
+>   #doing all possible combinations of variables
+>   v <- dim(test)[2]-1
+>   var_combos<-t(combn(v, 2))+1
+>   ones<-which(test[,1]==1)
+>   twos<-which(test[,1]==2)
+> 
+>   for(j in 1:dim(var_combos)[1]){
++     keep<-c(1,var_combos[j,])
++ 
++     #keeping variables here
++     test2<-test[,keep]
++     valid2<-valid[,keep]
++ 
++     tune.out<-tune(svm, as.factor(labs_svm) ~.,
++               data=test2,
++               kernel='polynomial',
++               ranges=list(cost=c(1), coef0=c(1:3, 50), degree=c(1:3, 5)),
++               validation.x=valid2[,-1],
++               validation.y=as.factor(valid2[,1]),
++               tunecontrol = tune.control(sampling = "fix"))
++ 
++     ypred=predict(tune.out$best.model ,test2)
++     #table(predict=ypred, truth=test$labs_svm)
++     errors_train2[j] = mean(ypred== test2$labs_svm )
++ 
++     ypred=predict(tune.out$best.model ,valid2)
++     #table(predict=ypred, truth=test$labs_svm)
++     errors_valid2[j] = mean(ypred== valid2$labs_svm )
++ 
++     temp_mat<-test2
++     temp_mat[,1]<- (temp_mat[,1]-mean(temp_mat[,1]))/sd(temp_mat[,1])
++     temp_mat[,2]<- (temp_mat[,2]-mean(temp_mat[,2]))/sd(temp_mat[,2])
++ 
++     dist1_e_feat[j]<-mean(dist(temp_mat[ones,-1 ], method="euclidean"))
++     dist2_e_feat[j]<-mean(dist(test2[twos,-1 ], method="euclidean"))
++ 
++   }
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+> 
+>   c_b<-which(errors_train2==max(errors_train2))
+>   abs_diff_dist<-abs(dist1_e_feat-dist2_e_feat)
+>   c_b_choice<-which(abs_diff_dist[c_b]==min(abs_diff_dist[c_b]))
+> 
+>   errors_train[i]<-errors_train2[c_b[c_b_choice]]
+>   errors_valid[i]<-errors_valid2[c_b[c_b_choice]]
+>   error_vars_best[i,]<-var_combos[c_b[c_b_choice],]
+> 
+>   ones<-which(test[,1]==1)
+>   twos<-which(test[,1]==2)
+>   #euclidean
+>   dist1_e[i]<-mean(dist(test[ones,error_vars_best[i,]], method="euclidean" ))
+>   dist2_e[i]<-mean(dist(test[twos,error_vars_best[i,]], method="euclidean" ))
+> 
+>   dist1_mink_3[i]<-mean(dist(test[ones,error_vars_best[i,]],
++                           method="minkowski", p=3))
+>   dist2_mink_3[i]<-mean(dist(test[twos,error_vars_best[i,]],
++                           method="minkowski", p=3 ))
+> 
+>   errors<-cbind(errors_train, errors_valid)
+>   colnames(errors)<-c("Error_train", "Error_valid")
+> 
+>   #finding which errors for training and valid have perfect results
+>   best<- which( (errors_train==1) )
+>   print(best)
+[1] 1
+>   print(errors)
+     Error_train Error_valid
+[1,]           1           1
+> 
+>   variables<- colnames(data[,error_vars_best[best,]-1])
+>   variables
+[1] "SP"           "Eccentricity"
+> 
+> 
+>   #create first meta group of
+>   #round, capsule, oval and rectangle
+>   #vs.
+>   #else
+> 
+>   #cleanign and setup of data
+>   data<- mydata
+>   train<-train_vec
+> 
+>   labs<-data[,1]
+>   data<-data[,-1]
+>   #classes to categorize must be the last column
+>   data<-cbind(data, labs)
+>   #putting training values as first column
+>   data<-cbind(train, data)
+> 
+> 
+>   #########
+> 
+>   keep1<-which(labs==1)
+>   keep2<-which(labs==2)
+>   keep3<-which(labs==3)
+> 
+>   keep4<-which(labs==4)
+>   keep5<-which(labs==5)
+> 
+>   keep6<-which(labs==6)
+>   keep7<-which(labs==7)
+>   keep8<-which(labs==8)
+> 
+>   keep10<-which(labs==10)
+>   keep11<-which(labs==11)
+>   keep12<-which(labs==12)
+> 
+>   keep<-c(keep1, #capsule
++           keep4, #oval
++           keep6, #rect
++           keep7 #round
++           )
+> 
+> 
+>   data1<-data[keep,]
+> 
+>   tree1 <- Node$new("Capsule, Round, Oval, and Rectangle")
+>   TrainDMG(tree1, data1, val )
+[1] 1
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 2
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 3
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 4
+[1] 5
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 6
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 7
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 1
+[1] "1,4"
+[1] "6,7"
+[1] 1
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] "1"
+[1] "4"
+[1] 1
+[1] 1
+[1] "6"
+[1] "7"
+>   print(tree1, "TrainCount", "class1",
++               "class0", "trainError",
++               "validError", "variables",
++               "Cost", "Degree",  "coef0")
+                            levelName TrainCount class1 class0 trainError
+1 Capsule, Round, Oval, and Rectangle       1930                       NA
+2  ¦--1,4                                   1020      1      4  1.0000000
+3  ¦   ¦--1                                   NA                0.9939759
+4  ¦   °--4                                   NA                0.9970930
+5  °--6,7                                    910      6      7  1.0000000
+6      ¦--6                                   NA                1.0000000
+7      °--7                                   NA                1.0000000
+  validError         variables Cost Degree coef0
+1         NA                     NA     NA    NA
+2  1.0000000    SP,Circularity    1      2    50
+3  0.9939759 Black,Circularity   10      5     1
+4  0.9883721 Black,Circularity   10      5     1
+5  1.0000000    SP,Circularity    1      2    50
+6  1.0000000    SP,Circularity    1      1     1
+7  1.0000000    SP,Circularity    1      1     1
+>   #export_graph(ToDiagrammeRGraph(tree1), "tree1_11_20_num2_0.41.pdf")
+> 
+>   #########
+> 
+>   data2<-data[-keep,]
+> 
+>   tree2 <- Node$new("Else")
+>   TrainDMG(tree2, data2, val )
+[1] 1
+[1] 2
+[1] 3
+
+WARNING: reaching max number of iterations
+[1] 4
+[1] 5
+
+WARNING: reaching max number of iterations
+[1] 6
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 7
+[1] 8
+[1] 9
+[1] 10
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 11
+
+WARNING: reaching max number of iterations
+[1] 12
+[1] 13
+
+WARNING: reaching max number of iterations
+[1] 14
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 15
+
+WARNING: reaching max number of iterations
+[1] 16
+[1] 17
+[1] 18
+[1] 19
+
+WARNING: reaching max number of iterations
+[1] 20
+[1] 21
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 22
+[1] 23
+[1] 24
+[1] 25
+
+WARNING: reaching max number of iterations
+[1] 26
+
+WARNING: reaching max number of iterations
+[1] 27
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 28
+
+WARNING: reaching max number of iterations
+[1] 29
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 30
+[1] 31
+[1] 32
+[1] 33
+[1] 34
+[1] 35
+
+WARNING: reaching max number of iterations
+[1] 36
+[1] 37
+[1] 38
+[1] 39
+
+WARNING: reaching max number of iterations
+[1] 40
+[1] 41
+
+WARNING: reaching max number of iterations
+[1] 42
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 43
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 44
+
+WARNING: reaching max number of iterations
+[1] 45
+
+WARNING: reaching max number of iterations
+[1] 46
+[1] 47
+[1] 48
+
+WARNING: reaching max number of iterations
+[1] 49
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 50
+[1] 51
+
+WARNING: reaching max number of iterations
+[1] 52
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 53
+
+WARNING: reaching max number of iterations
+[1] 54
+[1] 55
+[1] 56
+
+WARNING: reaching max number of iterations
+[1] 57
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 58
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 59
+[1] 60
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 61
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 62
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 63
+[1] 64
+[1] 65
+[1] 66
+[1] 67
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 68
+[1] 69
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 70
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 71
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 72
+[1] 73
+[1] 74
+
+WARNING: reaching max number of iterations
+[1] 75
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 76
+
+WARNING: reaching max number of iterations
+[1] 77
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 78
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 79
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 80
+[1] 81
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 82
+[1] 83
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 84
+[1] 85
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 86
+[1] 87
+[1] 88
+[1] 89
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 90
+[1] 91
+
+WARNING: reaching max number of iterations
+[1] 92
+
+WARNING: reaching max number of iterations
+[1] 93
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 94
+[1] 95
+
+WARNING: reaching max number of iterations
+[1] 96
+[1] 97
+[1] 98
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 99
+[1] 100
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 101
+
+WARNING: reaching max number of iterations
+[1] 102
+
+WARNING: reaching max number of iterations
+[1] 103
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 104
+
+WARNING: reaching max number of iterations
+[1] 105
+
+WARNING: reaching max number of iterations
+[1] 106
+[1] 107
+
+WARNING: reaching max number of iterations
+[1] 108
+[1] 109
+[1] 110
+[1] 111
+[1] 112
+[1] 113
+
+WARNING: reaching max number of iterations
+[1] 114
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 115
+
+WARNING: reaching max number of iterations
+[1] 116
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 117
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 118
+
+WARNING: reaching max number of iterations
+[1] 119
+
+WARNING: reaching max number of iterations
+[1] 120
+[1] 121
+
+WARNING: reaching max number of iterations
+[1] 122
+
+WARNING: reaching max number of iterations
+[1] 123
+[1] 124
+[1] 125
+[1] 126
+[1] 127
+[1] 1
+[1] "2,8,10,11"
+[1] "3,5,9,12"
+[1] 1
+[1] 2
+[1] 3
+[1] 4
+[1] 5
+[1] 6
+[1] 7
+[1] 1
+[1] "2,8"
+[1] "10,11"
+[1] 1
+[1] 1
+[1] "2"
+[1] "8"
+[1] 1
+[1] 1
+[1] "10"
+[1] "11"
+[1] 1
+[1] 2
+[1] 3
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 4
+[1] 5
+[1] 6
+[1] 7
+[1] 1
+[1] "3,5,9"
+[1] "12"
+[1] 1
+[1] 2
+[1] 3
+[1] 1
+[1] "3,5"
+[1] "9"
+[1] 1
+[1] 1
+[1] "3"
+[1] "5"
+>   print(tree2, "TrainCount", "class1",
++               "class0", "trainError",
++               "validError", "variables",
++               "Cost", "Degree",  "coef0")
+           levelName TrainCount class1 class0 trainError validError
+1  Else                      70                       NA         NA
+2   ¦--2,8,10,11             30                        1          1
+3   ¦   ¦--2,8               16      2      8          1          1
+4   ¦   ¦   ¦--2             NA                        1          1
+5   ¦   ¦   °--8             NA                        1          1
+6   ¦   °--10,11             14     10     11          1          1
+7   ¦       ¦--10            NA                        1          1
+8   ¦       °--11            NA                        1          0
+9   °--3,5,9,12              40                        1          1
+10      ¦--3,5,9             28                        1          1
+11      ¦   ¦--3,5           20      3      5          1          1
+12      ¦   ¦   ¦--3         NA                        1          1
+13      ¦   ¦   °--5         NA                        1          1
+14      ¦   °--9              8             9          1          1
+15      °--12                12            12          1          1
+                  variables Cost Degree coef0
+1                             NA     NA    NA
+2  Circularity,Eccentricity    1      3     1
+3  Circularity,Eccentricity    1      3    50
+4  Circularity,Eccentricity    1      1     1
+5  Circularity,Eccentricity    1      1     1
+6  Circularity,Eccentricity    1      3    50
+7            SP,Circularity    1      1     1
+8            SP,Circularity    1      1     1
+9  Circularity,Eccentricity    1      3     1
+10          SP,Eccentricity    1      1     1
+11 Circularity,Eccentricity    1      1     1
+12              White,Black    1      3    50
+13              White,Black    1      3    50
+14 Circularity,Eccentricity    1      1     1
+15          SP,Eccentricity    1      1     1
+>   #export_graph(ToDiagrammeRGraph(tree2), "tree2_11_20_num2_0.41.pdf")
+> 
+>   print('##################')
+[1] "##################"
+>   print('# 3rd run')
+[1] "# 3rd run"
+>   print('##################')
+[1] "##################"
+> 
+>   mydata<-cbind(labs, sp, temp, temp_shapes)
+> 
+>   cols_keep<-c(1:6, 10, 11)
+> 
+>   mydata<-mydata[,cols_keep]
+>   colnames(mydata)<-c("labs_svm", "SP",
++                       "White", "Black", "Circularity",
++                       "Eccentricity", "White_Box", "Black_Box"
++                       )
+> 
+> 
+>   #sample from round, oval, caps, and rectangle
+>   keep_rect<-which( ( labs== 6) )
+>   keep_circ<-which( ( labs== 7) )
+>   keep_cap<-which( ( labs== 1) )
+>   keep_oval<-which( ( labs== 4) )
+> 
+>   cap_rand<-sample(keep_cap, ref_tab_counts[1])
+>   train_01<-cap_rand[1:(ref_tab_counts[1]/2)]
+>   oval_rand<-sample(keep_oval, ref_tab_counts[4])
+>   train_4<-oval_rand[1:(ref_tab_counts[4]/2)]
+> 
+>   rect_rand<-sample(keep_rect, 6)
+>   train_6<-rect_rand[1:3]
+>   circ_rand<-sample(keep_circ, ref_tab_counts[7])
+>   train_7<-circ_rand[1:(ref_tab_counts[7]/2)]
+> 
+>   #sample from other
+>   keep_diam<-which( ( labs== 2) )
+>   keep_hex<-which( ( labs== 3) )
+>   keep_pent<-which( ( labs== 5) )
+>   keep_sc<-which( ( labs== 8) )
+>   keep_squ<-which( ( labs== 9) )
+>   keep_tear<-which( ( labs== 10) )
+>   keep_trap<-which( ( labs== 11) )
+>   keep_tri<-which( ( labs== 12) )
+> 
+>   diam_rand<-sample(keep_diam, 12)
+>   train_2<-diam_rand[1:6]
+>   hex_rand_reg<-sample(keep_hex[1:6], 6)
+>   hex_rand_other<-sample(keep_hex[7:8], 2)
+>   hex_rand<-c(hex_rand_reg[1:3], hex_rand_other[1],
++               hex_rand_reg[4:6], hex_rand_other[2])
+>   train_3<-hex_rand[1:4]
+> 
+>   pent_rand_reg<-sample(keep_pent[3:12], 10)
+>   pent_rand_other<-sample(keep_pent[1:2], 2)
+>   pent_rand<-c(pent_rand_reg[1:5], pent_rand_other[1],
++               pent_rand_reg[6:10], pent_rand_other[2])
+>   train_5<-pent_rand[1:6]
+>   sc_rand<-sample(keep_sc, 4)
+>   train_8<-sc_rand[1:2]
+> 
+>   squ_rand<-sample(keep_squ, 8)
+>   train_9<-squ_rand[1:4]
+>   tear_rand<-sample(keep_tear, 10)
+>   train_10<-tear_rand[1:5]
+> 
+>   trap_rand<-sample(keep_trap, 4)
+>   train_11<-trap_rand[1:2]
+>   tri_rand<-sample(keep_tri, 12)
+>   train_12<-tri_rand[1:6]
+> 
+> 
+>   train_vals<-c(train_01, train_2, train_3, train_4,
++                 train_5, train_6, train_7, train_8,
++                 train_9, train_10, train_11, train_12)
+> 
+>   train_vec<-rep(FALSE, length(labs))
+>   train_vec[train_vals]<-TRUE
+> 
+>   #cleanign and setup of data
+>   data<- mydata
+>   train<-train_vec
+> 
+>   labs<-data[,1]
+>   data<-data[,-1]
+>   #classes to categorize must be the last column
+>   data<-cbind(data, labs)
+>   #putting training values as first column
+>   data<-cbind(train, data)
+> 
+>   ############################
+>   #doing initial meta-class
+>   ############################
+> 
+>   data<-data[,-9]
+> 
+>   #getting training values
+>   t_f<-data[,1]
+>   train<-which(t_f==TRUE)
+>   #remove TRUE/FALSE from data
+>   #keep this to ease creation of results later
+>   data2 = data
+>   data = data[,-1]
+> 
+>   #initializing some needed vectors
+>   errors_train<-c()
+>   errors_valid<-c()
+> 
+>   size_1<-c()
+>   size_0<-c()
+> 
+>   size_1_counts<-c()
+>   size_0_counts<-c()
+>   diff_counts<-c()
+> 
+>   #for picking variables
+>   dist1_e_feat<-c()
+>   dist2_e_feat<-c()
+> 
+>   #for overall
+>   dist1_e<-c()
+>   dist2_e<-c()
+> 
+>   dist1_mink_3<-c()
+>   dist2_mink_3<-c()
+> 
+>   #finding all possible combinations of groups of classes
+>   numb = length(table(labs))
+>   outcomes = c(0,1)
+>   l = rep(list(outcomes), numb)
+>   combos = expand.grid( l )
+> 
+>   #remove last and first which are all one class
+>   combos = combos[-1,]
+>   last = dim(combos)[1]
+>   last2 = last-1
+>   combos = combos[1:last2, ]
+> 
+>   if(numb==2){
++ 
++     m=1
++ 
++   }else{
++ 
++     m = dim(combos)[1]/2
++ 
++   }
+> 
+>   best<-c()
+>   relab<-c(1:10)
+>   errors_train= 0
+>   errors_valid= 0
+> 
+>   errors_train2= 0
+>   errors_valid2= 0
+>   error_vars_best = matrix(nrow=m, ncol=2, data=0)
+> 
+>   i=1
+>   m=1
+> 
+>   #get first possible combination
+>   relab = as.character(combos[i,])
+>   relab[4] = "1"
+>   relab[6] = "1"
+>   relab[7] = "1"
+>   #create loopkup table
+>   lookup <- data.frame(cbind(
++             names(table(labs)),
++             relab
++             ))
+>   #recode the labels to new combination
+>   labs_new = lookup$relab[match(labs, lookup$V1)]
+> 
+>   labs_svm<-as.numeric(labs_new)
+> 
+>   test<-as.data.frame(cbind(labs_svm[train], data[train,]) )
+>   colnames(test)[1]<-"labs_svm"
+> 
+>   valid<-as.data.frame(cbind(labs_svm[-train], data[-train,]) )
+>   colnames(valid)[1]<-"labs_svm"
+> 
+>   #getting counts
+>   lasso_labs = test[,1]
+>   change = which(lasso_labs==2)
+>   lasso_labs[change] = 0
+>   lasso_labs = test[,1]
+>   #getting class sizes
+>   size_1[i]<-var(table(labs[train[which(lasso_labs==1)] ] ))
+>   size_0[i]<-var(table(labs[train[which(lasso_labs==0)] ] ))
+> 
+>   #change NA's to 0's if a single class
+>   if(is.na(size_1[i]) ){
++ 
++     size_1[i]=0
++ 
++   }
+> 
+>   if(is.na(size_0[i]) ){
++ 
++     size_0[i]=0
++ 
++   }
+> 
+>   #doing all possible combinations of variables
+>   v <- dim(test)[2]-1
+>   var_combos<-t(combn(v, 2))+1
+>   ones<-which(test[,1]==1)
+>   twos<-which(test[,1]==2)
+> 
+>   for(j in 1:dim(var_combos)[1]){
++     keep<-c(1,var_combos[j,])
++ 
++     #keeping variables here
++     test2<-test[,keep]
++     valid2<-valid[,keep]
++ 
++     tune.out<-tune(svm, as.factor(labs_svm) ~.,
++               data=test2,
++               kernel='polynomial',
++               ranges=list(cost=c(1), coef0=c(1:3, 50), degree=c(1:3, 5)),
++               validation.x=valid2[,-1],
++               validation.y=as.factor(valid2[,1]),
++               tunecontrol = tune.control(sampling = "fix"))
++ 
++     ypred=predict(tune.out$best.model ,test2)
++     #table(predict=ypred, truth=test$labs_svm)
++     errors_train2[j] = mean(ypred== test2$labs_svm )
++ 
++     ypred=predict(tune.out$best.model ,valid2)
++     #table(predict=ypred, truth=test$labs_svm)
++     errors_valid2[j] = mean(ypred== valid2$labs_svm )
++ 
++     temp_mat<-test2
++     temp_mat[,1]<- (temp_mat[,1]-mean(temp_mat[,1]))/sd(temp_mat[,1])
++     temp_mat[,2]<- (temp_mat[,2]-mean(temp_mat[,2]))/sd(temp_mat[,2])
++ 
++     dist1_e_feat[j]<-mean(dist(temp_mat[ones,-1 ], method="euclidean"))
++     dist2_e_feat[j]<-mean(dist(test2[twos,-1 ], method="euclidean"))
++ 
++   }
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+> 
+>   c_b<-which(errors_train2==max(errors_train2))
+>   abs_diff_dist<-abs(dist1_e_feat-dist2_e_feat)
+>   c_b_choice<-which(abs_diff_dist[c_b]==min(abs_diff_dist[c_b]))
+> 
+>   errors_train[i]<-errors_train2[c_b[c_b_choice]]
+>   errors_valid[i]<-errors_valid2[c_b[c_b_choice]]
+>   error_vars_best[i,]<-var_combos[c_b[c_b_choice],]
+> 
+>   ones<-which(test[,1]==1)
+>   twos<-which(test[,1]==2)
+>   #euclidean
+>   dist1_e[i]<-mean(dist(test[ones,error_vars_best[i,]], method="euclidean" ))
+>   dist2_e[i]<-mean(dist(test[twos,error_vars_best[i,]], method="euclidean" ))
+> 
+>   dist1_mink_3[i]<-mean(dist(test[ones,error_vars_best[i,]],
++                           method="minkowski", p=3))
+>   dist2_mink_3[i]<-mean(dist(test[twos,error_vars_best[i,]],
++                           method="minkowski", p=3 ))
+> 
+>   errors<-cbind(errors_train, errors_valid)
+>   colnames(errors)<-c("Error_train", "Error_valid")
+> 
+>   #finding which errors for training and valid have perfect results
+>   best<- which( (errors_train==1) )
+>   print(best)
+[1] 1
+>   print(errors)
+     Error_train Error_valid
+[1,]           1           1
+> 
+>   variables<- colnames(data[,error_vars_best[best,]-1])
+>   variables
+[1] "SP"           "Eccentricity"
+> 
+> 
+>   #create first meta group of
+>   #round, capsule, oval and rectangle
+>   #vs.
+>   #else
+> 
+>   #cleanign and setup of data
+>   data<- mydata
+>   train<-train_vec
+> 
+>   labs<-data[,1]
+>   data<-data[,-1]
+>   #classes to categorize must be the last column
+>   data<-cbind(data, labs)
+>   #putting training values as first column
+>   data<-cbind(train, data)
+> 
+> 
+>   #########
+> 
+>   keep1<-which(labs==1)
+>   keep2<-which(labs==2)
+>   keep3<-which(labs==3)
+> 
+>   keep4<-which(labs==4)
+>   keep5<-which(labs==5)
+> 
+>   keep6<-which(labs==6)
+>   keep7<-which(labs==7)
+>   keep8<-which(labs==8)
+> 
+>   keep10<-which(labs==10)
+>   keep11<-which(labs==11)
+>   keep12<-which(labs==12)
+> 
+>   keep<-c(keep1, #capsule
++           keep4, #oval
++           keep6, #rect
++           keep7 #round
++           )
+> 
+> 
+>   data1<-data[keep,]
+> 
+>   tree1 <- Node$new("Capsule, Round, Oval, and Rectangle")
+>   TrainDMG(tree1, data1, val )
+[1] 1
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 2
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 3
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 4
+[1] 5
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 6
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 7
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 1
+[1] "1,4"
+[1] "6,7"
+[1] 1
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] "1"
+[1] "4"
+[1] 1
+[1] 1
+[1] "6"
+[1] "7"
+>   print(tree1, "TrainCount", "class1",
++               "class0", "trainError",
++               "validError", "variables",
++               "Cost", "Degree",  "coef0")
+                            levelName TrainCount class1 class0 trainError
+1 Capsule, Round, Oval, and Rectangle       1930                       NA
+2  ¦--1,4                                   1020      1      4  1.0000000
+3  ¦   ¦--1                                   NA                0.9939759
+4  ¦   °--4                                   NA                0.9970930
+5  °--6,7                                    910      6      7  1.0000000
+6      ¦--6                                   NA                1.0000000
+7      °--7                                   NA                1.0000000
+  validError                variables Cost Degree coef0
+1         NA                            NA     NA    NA
+2  1.0000000 Circularity,Eccentricity    1      3    50
+3  0.9819277    Circularity,Black_Box   10      5     2
+4  0.9912791    Circularity,Black_Box   10      5     2
+5  1.0000000 Circularity,Eccentricity    1      3    50
+6  1.0000000           SP,Circularity    1      1     1
+7  1.0000000           SP,Circularity    1      1     1
+>   #export_graph(ToDiagrammeRGraph(tree1), "tree1_11_20_num3_0.41.pdf")
+> 
+>   #########
+> 
+>   data2<-data[-keep,]
+> 
+>   tree2 <- Node$new("Else")
+>   TrainDMG(tree2, data2, val )
+[1] 1
+[1] 2
+[1] 3
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 4
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 5
+
+WARNING: reaching max number of iterations
+[1] 6
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 7
+
+WARNING: reaching max number of iterations
+[1] 8
+[1] 9
+[1] 10
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 11
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 12
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 13
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 14
+
+WARNING: reaching max number of iterations
+[1] 15
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 16
+[1] 17
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 18
+
+WARNING: reaching max number of iterations
+[1] 19
+
+WARNING: reaching max number of iterations
+[1] 20
+[1] 21
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 22
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 23
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 24
+[1] 25
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 26
+[1] 27
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 28
+
+WARNING: reaching max number of iterations
+[1] 29
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 30
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 31
+
+WARNING: reaching max number of iterations
+[1] 32
+[1] 33
+
+WARNING: reaching max number of iterations
+[1] 34
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 35
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 36
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 37
+
+WARNING: reaching max number of iterations
+[1] 38
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 39
+
+WARNING: reaching max number of iterations
+[1] 40
+
+WARNING: reaching max number of iterations
+[1] 41
+[1] 42
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 43
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 44
+
+WARNING: reaching max number of iterations
+[1] 45
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 46
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 47
+
+WARNING: reaching max number of iterations
+[1] 48
+
+WARNING: reaching max number of iterations
+[1] 49
+
+WARNING: reaching max number of iterations
+[1] 50
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 51
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 52
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 53
+
+WARNING: reaching max number of iterations
+[1] 54
+
+WARNING: reaching max number of iterations
+[1] 55
+
+WARNING: reaching max number of iterations
+[1] 56
+
+WARNING: reaching max number of iterations
+[1] 57
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 58
+
+WARNING: reaching max number of iterations
+[1] 59
+
+WARNING: reaching max number of iterations
+[1] 60
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 61
+
+WARNING: reaching max number of iterations
+[1] 62
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 63
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 64
+[1] 65
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 66
+
+WARNING: reaching max number of iterations
+[1] 67
+[1] 68
+[1] 69
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 70
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 71
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 72
+[1] 73
+
+WARNING: reaching max number of iterations
+[1] 74
+
+WARNING: reaching max number of iterations
+[1] 75
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 76
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 77
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 78
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 79
+[1] 80
+[1] 81
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 82
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 83
+
+WARNING: reaching max number of iterations
+[1] 84
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 85
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 86
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 87
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 88
+
+WARNING: reaching max number of iterations
+[1] 89
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 90
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 91
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 92
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 93
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 94
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 95
+
+WARNING: reaching max number of iterations
+[1] 96
+
+WARNING: reaching max number of iterations
+[1] 97
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 98
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 99
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 100
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 101
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 102
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 103
+[1] 104
+
+WARNING: reaching max number of iterations
+[1] 105
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 106
+
+WARNING: reaching max number of iterations
+[1] 107
+
+WARNING: reaching max number of iterations
+[1] 108
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 109
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 110
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 111
+[1] 112
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 113
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 114
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 115
+
+WARNING: reaching max number of iterations
+[1] 116
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 117
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 118
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 119
+[1] 120
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 121
+
+WARNING: reaching max number of iterations
+[1] 122
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 123
+[1] 124
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 125
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 126
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 127
+[1] 1
+[1] "3,5,8,9"
+[1] "2,10,11,12"
+[1] 1
+[1] 2
+[1] 3
+[1] 4
+[1] 5
+[1] 6
+[1] 7
+[1] 1
+[1] "8"
+[1] "3,5,9"
+[1] 1
+[1] 2
+[1] 3
+[1] 1
+[1] "3,5"
+[1] "9"
+[1] 1
+[1] 1
+[1] "3"
+[1] "5"
+[1] 1
+[1] 2
+[1] 3
+[1] 4
+[1] 5
+[1] 6
+[1] 7
+[1] 1
+[1] "10,11"
+[1] "2,12"
+[1] 1
+[1] 1
+[1] "10"
+[1] "11"
+[1] 1
+[1] 1
+[1] "2"
+[1] "12"
+>   print(tree2, "TrainCount", "class1",
++               "class0", "trainError",
++               "validError", "variables",
++               "Cost", "Degree",  "coef0")
+           levelName TrainCount class1 class0 trainError validError
+1  Else                      70                       NA         NA
+2   ¦--3,5,8,9               32                        1          1
+3   ¦   ¦--8                  4      8                 1          1
+4   ¦   °--3,5,9             28                        1          1
+5   ¦       ¦--3,5           20      3      5          1          1
+6   ¦       ¦   ¦--3         NA                        1          1
+7   ¦       ¦   °--5         NA                        1          1
+8   ¦       °--9              8             9          1          1
+9   °--2,10,11,12            38                        1          1
+10      ¦--10,11             14     10     11          1          1
+11      ¦   ¦--10            NA                        1          1
+12      ¦   °--11            NA                        1          1
+13      °--2,12              24      2     12          1          1
+14          ¦--2             NA                        1          1
+15          °--12            NA                        1          1
+                  variables Cost Degree coef0
+1                             NA     NA    NA
+2           SP,Eccentricity    1      3    50
+3            SP,Circularity    1      3    50
+4            SP,Circularity    1      3    50
+5  Circularity,Eccentricity    1      1     1
+6  Circularity,Eccentricity    1      5    50
+7  Circularity,Eccentricity    1      5    50
+8  Circularity,Eccentricity    1      1     1
+9           SP,Eccentricity    1      3    50
+10 Circularity,Eccentricity    1      2     1
+11 Circularity,Eccentricity    1      1     1
+12 Circularity,Eccentricity    1      1     1
+13 Circularity,Eccentricity    1      2     1
+14          SP,Eccentricity    1      1     1
+15          SP,Eccentricity    1      1     1
+>   #export_graph(ToDiagrammeRGraph(tree2), "tree2_11_20_num3_0.41.pdf")
+> 
+>   print('##################')
+[1] "##################"
+>   print('# 4th run')
+[1] "# 4th run"
+>   print('##################')
+[1] "##################"
+> 
+>   mydata<-cbind(labs, sp, temp, temp_shapes)
+> 
+>   cols_keep<-c(1:6, 10, 11)
+> 
+>   mydata<-mydata[,cols_keep]
+>   colnames(mydata)<-c("labs_svm", "SP",
++                       "White", "Black", "Circularity",
++                       "Eccentricity", "White_Box", "Black_Box"
++                       )
+> 
+> 
+>   #sample from round, oval, caps, and rectangle
+>   keep_rect<-which( ( labs== 6) )
+>   keep_circ<-which( ( labs== 7) )
+>   keep_cap<-which( ( labs== 1) )
+>   keep_oval<-which( ( labs== 4) )
+> 
+>   cap_rand<-sample(keep_cap, ref_tab_counts[1])
+>   train_01<-cap_rand[1:(ref_tab_counts[1]/2)]
+>   oval_rand<-sample(keep_oval, ref_tab_counts[4])
+>   train_4<-oval_rand[1:(ref_tab_counts[4]/2)]
+> 
+>   rect_rand<-sample(keep_rect, 6)
+>   train_6<-rect_rand[1:3]
+>   circ_rand<-sample(keep_circ, ref_tab_counts[7])
+>   train_7<-circ_rand[1:(ref_tab_counts[7]/2)]
+> 
+>   #sample from other
+>   keep_diam<-which( ( labs== 2) )
+>   keep_hex<-which( ( labs== 3) )
+>   keep_pent<-which( ( labs== 5) )
+>   keep_sc<-which( ( labs== 8) )
+>   keep_squ<-which( ( labs== 9) )
+>   keep_tear<-which( ( labs== 10) )
+>   keep_trap<-which( ( labs== 11) )
+>   keep_tri<-which( ( labs== 12) )
+> 
+>   diam_rand<-sample(keep_diam, 12)
+>   train_2<-diam_rand[1:6]
+>   hex_rand_reg<-sample(keep_hex[1:6], 6)
+>   hex_rand_other<-sample(keep_hex[7:8], 2)
+>   hex_rand<-c(hex_rand_reg[1:3], hex_rand_other[1],
++               hex_rand_reg[4:6], hex_rand_other[2])
+>   train_3<-hex_rand[1:4]
+> 
+>   pent_rand_reg<-sample(keep_pent[3:12], 10)
+>   pent_rand_other<-sample(keep_pent[1:2], 2)
+>   pent_rand<-c(pent_rand_reg[1:5], pent_rand_other[1],
++               pent_rand_reg[6:10], pent_rand_other[2])
+>   train_5<-pent_rand[1:6]
+>   sc_rand<-sample(keep_sc, 4)
+>   train_8<-sc_rand[1:2]
+> 
+>   squ_rand<-sample(keep_squ, 8)
+>   train_9<-squ_rand[1:4]
+>   tear_rand<-sample(keep_tear, 10)
+>   train_10<-tear_rand[1:5]
+> 
+>   trap_rand<-sample(keep_trap, 4)
+>   train_11<-trap_rand[1:2]
+>   tri_rand<-sample(keep_tri, 12)
+>   train_12<-tri_rand[1:6]
+> 
+> 
+>   train_vals<-c(train_01, train_2, train_3, train_4,
++                 train_5, train_6, train_7, train_8,
++                 train_9, train_10, train_11, train_12)
+> 
+>   train_vec<-rep(FALSE, length(labs))
+>   train_vec[train_vals]<-TRUE
+> 
+>   #cleanign and setup of data
+>   data<- mydata
+>   train<-train_vec
+> 
+>   labs<-data[,1]
+>   data<-data[,-1]
+>   #classes to categorize must be the last column
+>   data<-cbind(data, labs)
+>   #putting training values as first column
+>   data<-cbind(train, data)
+> 
+>   ############################
+>   #doing initial meta-class
+>   ############################
+> 
+>   data<-data[,-9]
+> 
+>   #getting training values
+>   t_f<-data[,1]
+>   train<-which(t_f==TRUE)
+>   #remove TRUE/FALSE from data
+>   #keep this to ease creation of results later
+>   data2 = data
+>   data = data[,-1]
+> 
+>   #initializing some needed vectors
+>   errors_train<-c()
+>   errors_valid<-c()
+> 
+>   size_1<-c()
+>   size_0<-c()
+> 
+>   size_1_counts<-c()
+>   size_0_counts<-c()
+>   diff_counts<-c()
+> 
+>   #for picking variables
+>   dist1_e_feat<-c()
+>   dist2_e_feat<-c()
+> 
+>   #for overall
+>   dist1_e<-c()
+>   dist2_e<-c()
+> 
+>   dist1_mink_3<-c()
+>   dist2_mink_3<-c()
+> 
+>   #finding all possible combinations of groups of classes
+>   numb = length(table(labs))
+>   outcomes = c(0,1)
+>   l = rep(list(outcomes), numb)
+>   combos = expand.grid( l )
+> 
+>   #remove last and first which are all one class
+>   combos = combos[-1,]
+>   last = dim(combos)[1]
+>   last2 = last-1
+>   combos = combos[1:last2, ]
+> 
+>   if(numb==2){
++ 
++     m=1
++ 
++   }else{
++ 
++     m = dim(combos)[1]/2
++ 
++   }
+> 
+>   best<-c()
+>   relab<-c(1:10)
+>   errors_train= 0
+>   errors_valid= 0
+> 
+>   errors_train2= 0
+>   errors_valid2= 0
+>   error_vars_best = matrix(nrow=m, ncol=2, data=0)
+> 
+>   i=1
+>   m=1
+> 
+>   #get first possible combination
+>   relab = as.character(combos[i,])
+>   relab[4] = "1"
+>   relab[6] = "1"
+>   relab[7] = "1"
+>   #create loopkup table
+>   lookup <- data.frame(cbind(
++             names(table(labs)),
++             relab
++             ))
+>   #recode the labels to new combination
+>   labs_new = lookup$relab[match(labs, lookup$V1)]
+> 
+>   labs_svm<-as.numeric(labs_new)
+> 
+>   test<-as.data.frame(cbind(labs_svm[train], data[train,]) )
+>   colnames(test)[1]<-"labs_svm"
+> 
+>   valid<-as.data.frame(cbind(labs_svm[-train], data[-train,]) )
+>   colnames(valid)[1]<-"labs_svm"
+> 
+>   #getting counts
+>   lasso_labs = test[,1]
+>   change = which(lasso_labs==2)
+>   lasso_labs[change] = 0
+>   lasso_labs = test[,1]
+>   #getting class sizes
+>   size_1[i]<-var(table(labs[train[which(lasso_labs==1)] ] ))
+>   size_0[i]<-var(table(labs[train[which(lasso_labs==0)] ] ))
+> 
+>   #change NA's to 0's if a single class
+>   if(is.na(size_1[i]) ){
++ 
++     size_1[i]=0
++ 
++   }
+> 
+>   if(is.na(size_0[i]) ){
++ 
++     size_0[i]=0
++ 
++   }
+> 
+>   #doing all possible combinations of variables
+>   v <- dim(test)[2]-1
+>   var_combos<-t(combn(v, 2))+1
+>   ones<-which(test[,1]==1)
+>   twos<-which(test[,1]==2)
+> 
+>   for(j in 1:dim(var_combos)[1]){
++     keep<-c(1,var_combos[j,])
++ 
++     #keeping variables here
++     test2<-test[,keep]
++     valid2<-valid[,keep]
++ 
++     tune.out<-tune(svm, as.factor(labs_svm) ~.,
++               data=test2,
++               kernel='polynomial',
++               ranges=list(cost=c(1), coef0=c(1:3, 50), degree=c(1:3, 5)),
++               validation.x=valid2[,-1],
++               validation.y=as.factor(valid2[,1]),
++               tunecontrol = tune.control(sampling = "fix"))
++ 
++     ypred=predict(tune.out$best.model ,test2)
++     #table(predict=ypred, truth=test$labs_svm)
++     errors_train2[j] = mean(ypred== test2$labs_svm )
++ 
++     ypred=predict(tune.out$best.model ,valid2)
++     #table(predict=ypred, truth=test$labs_svm)
++     errors_valid2[j] = mean(ypred== valid2$labs_svm )
++ 
++     temp_mat<-test2
++     temp_mat[,1]<- (temp_mat[,1]-mean(temp_mat[,1]))/sd(temp_mat[,1])
++     temp_mat[,2]<- (temp_mat[,2]-mean(temp_mat[,2]))/sd(temp_mat[,2])
++ 
++     dist1_e_feat[j]<-mean(dist(temp_mat[ones,-1 ], method="euclidean"))
++     dist2_e_feat[j]<-mean(dist(test2[twos,-1 ], method="euclidean"))
++ 
++   }
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+> 
+>   c_b<-which(errors_train2==max(errors_train2))
+>   abs_diff_dist<-abs(dist1_e_feat-dist2_e_feat)
+>   c_b_choice<-which(abs_diff_dist[c_b]==min(abs_diff_dist[c_b]))
+> 
+>   errors_train[i]<-errors_train2[c_b[c_b_choice]]
+>   errors_valid[i]<-errors_valid2[c_b[c_b_choice]]
+>   error_vars_best[i,]<-var_combos[c_b[c_b_choice],]
+> 
+>   ones<-which(test[,1]==1)
+>   twos<-which(test[,1]==2)
+>   #euclidean
+>   dist1_e[i]<-mean(dist(test[ones,error_vars_best[i,]], method="euclidean" ))
+>   dist2_e[i]<-mean(dist(test[twos,error_vars_best[i,]], method="euclidean" ))
+> 
+>   dist1_mink_3[i]<-mean(dist(test[ones,error_vars_best[i,]],
++                           method="minkowski", p=3))
+>   dist2_mink_3[i]<-mean(dist(test[twos,error_vars_best[i,]],
++                           method="minkowski", p=3 ))
+> 
+>   errors<-cbind(errors_train, errors_valid)
+>   colnames(errors)<-c("Error_train", "Error_valid")
+> 
+>   #finding which errors for training and valid have perfect results
+>   best<- which( (errors_train==1) )
+>   print(best)
+[1] 1
+>   print(errors)
+     Error_train Error_valid
+[1,]           1           1
+> 
+>   variables<- colnames(data[,error_vars_best[best,]-1])
+>   variables
+[1] "SP"           "Eccentricity"
+> 
+> 
+>   #create first meta group of
+>   #round, capsule, oval and rectangle
+>   #vs.
+>   #else
+> 
+>   #cleanign and setup of data
+>   data<- mydata
+>   train<-train_vec
+> 
+>   labs<-data[,1]
+>   data<-data[,-1]
+>   #classes to categorize must be the last column
+>   data<-cbind(data, labs)
+>   #putting training values as first column
+>   data<-cbind(train, data)
+> 
+> 
+>   #########
+> 
+>   keep1<-which(labs==1)
+>   keep2<-which(labs==2)
+>   keep3<-which(labs==3)
+> 
+>   keep4<-which(labs==4)
+>   keep5<-which(labs==5)
+> 
+>   keep6<-which(labs==6)
+>   keep7<-which(labs==7)
+>   keep8<-which(labs==8)
+> 
+>   keep10<-which(labs==10)
+>   keep11<-which(labs==11)
+>   keep12<-which(labs==12)
+> 
+>   keep<-c(keep1, #capsule
++           keep4, #oval
++           keep6, #rect
++           keep7 #round
++           )
+> 
+> 
+>   data1<-data[keep,]
+> 
+>   tree1 <- Node$new("Capsule, Round, Oval, and Rectangle")
+>   TrainDMG(tree1, data1, val )
+[1] 1
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 2
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 3
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 4
+[1] 5
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 6
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 7
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 1
+[1] "1,4"
+[1] "6,7"
+[1] 1
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] "1"
+[1] "4"
+[1] 1
+[1] 1
+[1] "6"
+[1] "7"
+>   print(tree1, "TrainCount", "class1",
++               "class0", "trainError",
++               "validError", "variables",
++               "Cost", "Degree",  "coef0")
+                            levelName TrainCount class1 class0 trainError
+1 Capsule, Round, Oval, and Rectangle       1930                       NA
+2  ¦--1,4                                   1020      1      4  1.0000000
+3  ¦   ¦--1                                   NA                0.9879518
+4  ¦   °--4                                   NA                0.9912791
+5  °--6,7                                    910      6      7  1.0000000
+6      ¦--6                                   NA                1.0000000
+7      °--7                                   NA                1.0000000
+  validError                variables Cost Degree coef0
+1         NA                            NA     NA    NA
+2  1.0000000           SP,Circularity    1      3    50
+3  1.0000000 Circularity,Eccentricity    1      5     1
+4  0.9796512 Circularity,Eccentricity    1      5     1
+5  1.0000000           SP,Circularity    1      3    50
+6  1.0000000           SP,Circularity    1      1     1
+7  1.0000000           SP,Circularity    1      1     1
+>   #export_graph(ToDiagrammeRGraph(tree1), "tree1_11_20_num4_0.41.pdf")
+> 
+>   #########
+> 
+>   data2<-data[-keep,]
+> 
+>   tree2 <- Node$new("Else")
+>   TrainDMG(tree2, data2, val )
+[1] 1
+[1] 2
+[1] 3
+
+WARNING: reaching max number of iterations
+[1] 4
+[1] 5
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 6
+
+WARNING: reaching max number of iterations
+[1] 7
+
+WARNING: reaching max number of iterations
+[1] 8
+[1] 9
+[1] 10
+[1] 11
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 12
+
+WARNING: reaching max number of iterations
+[1] 13
+[1] 14
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 15
+
+WARNING: reaching max number of iterations
+[1] 16
+[1] 17
+
+WARNING: reaching max number of iterations
+[1] 18
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 19
+[1] 20
+[1] 21
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 22
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 23
+
+WARNING: reaching max number of iterations
+[1] 24
+[1] 25
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 26
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 27
+[1] 28
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 29
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 30
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 31
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 32
+[1] 33
+[1] 34
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 35
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 36
+[1] 37
+
+WARNING: reaching max number of iterations
+[1] 38
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 39
+[1] 40
+[1] 41
+
+WARNING: reaching max number of iterations
+[1] 42
+[1] 43
+[1] 44
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 45
+
+WARNING: reaching max number of iterations
+[1] 46
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 47
+
+WARNING: reaching max number of iterations
+[1] 48
+[1] 49
+
+WARNING: reaching max number of iterations
+[1] 50
+[1] 51
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 52
+
+WARNING: reaching max number of iterations
+[1] 53
+
+WARNING: reaching max number of iterations
+[1] 54
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 55
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 56
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 57
+
+WARNING: reaching max number of iterations
+[1] 58
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 59
+[1] 60
+[1] 61
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 62
+[1] 63
+[1] 64
+[1] 65
+[1] 66
+[1] 67
+[1] 68
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 69
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 70
+[1] 71
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 72
+
+WARNING: reaching max number of iterations
+[1] 73
+[1] 74
+[1] 75
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 76
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 77
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 78
+
+WARNING: reaching max number of iterations
+[1] 79
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 80
+
+WARNING: reaching max number of iterations
+[1] 81
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 82
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 83
+
+WARNING: reaching max number of iterations
+[1] 84
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 85
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 86
+[1] 87
+[1] 88
+[1] 89
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 90
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 91
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 92
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 93
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 94
+
+WARNING: reaching max number of iterations
+[1] 95
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 96
+[1] 97
+
+WARNING: reaching max number of iterations
+[1] 98
+
+WARNING: reaching max number of iterations
+[1] 99
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 100
+
+WARNING: reaching max number of iterations
+[1] 101
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 102
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 103
+[1] 104
+[1] 105
+
+WARNING: reaching max number of iterations
+[1] 106
+
+WARNING: reaching max number of iterations
+[1] 107
+[1] 108
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 109
+
+WARNING: reaching max number of iterations
+[1] 110
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 111
+[1] 112
+[1] 113
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 114
+[1] 115
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 116
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 117
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 118
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 119
+
+WARNING: reaching max number of iterations
+[1] 120
+[1] 121
+[1] 122
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 123
+[1] 124
+[1] 125
+
+WARNING: reaching max number of iterations
+[1] 126
+[1] 127
+[1] 1
+[1] "3,5,8,9"
+[1] "2,10,11,12"
+[1] 1
+[1] 2
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 3
+[1] 4
+[1] 5
+[1] 6
+
+WARNING: reaching max number of iterations
+[1] 7
+[1] 1
+[1] "8"
+[1] "3,5,9"
+[1] 1
+[1] 2
+[1] 3
+[1] 1
+[1] "3,5"
+[1] "9"
+[1] 1
+[1] 1
+[1] "3"
+[1] "5"
+[1] 1
+[1] 2
+[1] 3
+[1] 4
+[1] 5
+[1] 6
+[1] 7
+[1] 1
+[1] "11"
+[1] "2,10,12"
+[1] 1
+[1] 2
+[1] 3
+[1] 1
+[1] "10"
+[1] "2,12"
+[1] 1
+[1] 1
+[1] "2"
+[1] "12"
+>   print(tree2, "TrainCount", "class1",
++               "class0", "trainError",
++               "validError", "variables",
++               "Cost", "Degree",  "coef0")
+            levelName TrainCount class1 class0 trainError validError
+1  Else                       70                       NA         NA
+2   ¦--3,5,8,9                32                        1        1.0
+3   ¦   ¦--8                   4      8                 1        1.0
+4   ¦   °--3,5,9              28                        1        1.0
+5   ¦       ¦--3,5            20      3      5          1        1.0
+6   ¦       ¦   ¦--3          NA                        1        0.5
+7   ¦       ¦   °--5          NA                        1        1.0
+8   ¦       °--9               8             9          1        1.0
+9   °--2,10,11,12             38                        1        1.0
+10      ¦--11                  4     11                 1        0.0
+11      °--2,10,12            34                        1        1.0
+12          ¦--10             10     10                 1        1.0
+13          °--2,12           24      2     12          1        1.0
+14              ¦--2          NA                        1        1.0
+15              °--12         NA                        1        1.0
+                  variables Cost Degree coef0
+1                             NA     NA    NA
+2           SP,Eccentricity    1      3    50
+3            SP,Circularity    1      3    50
+4            SP,Circularity    1      3    50
+5  Circularity,Eccentricity    1      1     1
+6     Circularity,Black_Box    1      2     1
+7     Circularity,Black_Box    1      2     1
+8  Circularity,Eccentricity    1      1     1
+9           SP,Eccentricity    1      3    50
+10           SP,Circularity    1      1     1
+11           SP,Circularity    1      1     1
+12          SP,Eccentricity    1      1     1
+13          SP,Eccentricity    1      1     1
+14 Circularity,Eccentricity    1      1     1
+15 Circularity,Eccentricity    1      1     1
+>   #export_graph(ToDiagrammeRGraph(tree2), "tree2_11_20_num4_0.41.pdf")
+> 
+>   print('##################')
+[1] "##################"
+>   print('# 5th run')
+[1] "# 5th run"
+>   print('##################')
+[1] "##################"
+> 
+>   mydata<-cbind(labs, sp, temp, temp_shapes)
+> 
+>   cols_keep<-c(1:6, 10, 11)
+> 
+>   mydata<-mydata[,cols_keep]
+>   colnames(mydata)<-c("labs_svm", "SP",
++                       "White", "Black", "Circularity",
++                       "Eccentricity", "White_Box", "Black_Box"
++                       )
+> 
+> 
+>   #sample from round, oval, caps, and rectangle
+>   keep_rect<-which( ( labs== 6) )
+>   keep_circ<-which( ( labs== 7) )
+>   keep_cap<-which( ( labs== 1) )
+>   keep_oval<-which( ( labs== 4) )
+> 
+>   cap_rand<-sample(keep_cap, ref_tab_counts[1])
+>   train_01<-cap_rand[1:(ref_tab_counts[1]/2)]
+>   oval_rand<-sample(keep_oval, ref_tab_counts[4])
+>   train_4<-oval_rand[1:(ref_tab_counts[4]/2)]
+> 
+>   rect_rand<-sample(keep_rect, 6)
+>   train_6<-rect_rand[1:3]
+>   circ_rand<-sample(keep_circ, ref_tab_counts[7])
+>   train_7<-circ_rand[1:(ref_tab_counts[7]/2)]
+> 
+>   #sample from other
+>   keep_diam<-which( ( labs== 2) )
+>   keep_hex<-which( ( labs== 3) )
+>   keep_pent<-which( ( labs== 5) )
+>   keep_sc<-which( ( labs== 8) )
+>   keep_squ<-which( ( labs== 9) )
+>   keep_tear<-which( ( labs== 10) )
+>   keep_trap<-which( ( labs== 11) )
+>   keep_tri<-which( ( labs== 12) )
+> 
+>   diam_rand<-sample(keep_diam, 12)
+>   train_2<-diam_rand[1:6]
+>   hex_rand_reg<-sample(keep_hex[1:6], 6)
+>   hex_rand_other<-sample(keep_hex[7:8], 2)
+>   hex_rand<-c(hex_rand_reg[1:3], hex_rand_other[1],
++               hex_rand_reg[4:6], hex_rand_other[2])
+>   train_3<-hex_rand[1:4]
+> 
+>   pent_rand_reg<-sample(keep_pent[3:12], 10)
+>   pent_rand_other<-sample(keep_pent[1:2], 2)
+>   pent_rand<-c(pent_rand_reg[1:5], pent_rand_other[1],
++               pent_rand_reg[6:10], pent_rand_other[2])
+>   train_5<-pent_rand[1:6]
+>   sc_rand<-sample(keep_sc, 4)
+>   train_8<-sc_rand[1:2]
+> 
+>   squ_rand<-sample(keep_squ, 8)
+>   train_9<-squ_rand[1:4]
+>   tear_rand<-sample(keep_tear, 10)
+>   train_10<-tear_rand[1:5]
+> 
+>   trap_rand<-sample(keep_trap, 4)
+>   train_11<-trap_rand[1:2]
+>   tri_rand<-sample(keep_tri, 12)
+>   train_12<-tri_rand[1:6]
+> 
+> 
+>   train_vals<-c(train_01, train_2, train_3, train_4,
++                 train_5, train_6, train_7, train_8,
++                 train_9, train_10, train_11, train_12)
+> 
+>   train_vec<-rep(FALSE, length(labs))
+>   train_vec[train_vals]<-TRUE
+> 
+>   #cleanign and setup of data
+>   data<- mydata
+>   train<-train_vec
+> 
+>   labs<-data[,1]
+>   data<-data[,-1]
+>   #classes to categorize must be the last column
+>   data<-cbind(data, labs)
+>   #putting training values as first column
+>   data<-cbind(train, data)
+> 
+>   ############################
+>   #doing initial meta-class
+>   ############################
+> 
+>   data<-data[,-9]
+> 
+>   #getting training values
+>   t_f<-data[,1]
+>   train<-which(t_f==TRUE)
+>   #remove TRUE/FALSE from data
+>   #keep this to ease creation of results later
+>   data2 = data
+>   data = data[,-1]
+> 
+>   #initializing some needed vectors
+>   errors_train<-c()
+>   errors_valid<-c()
+> 
+>   size_1<-c()
+>   size_0<-c()
+> 
+>   size_1_counts<-c()
+>   size_0_counts<-c()
+>   diff_counts<-c()
+> 
+>   #for picking variables
+>   dist1_e_feat<-c()
+>   dist2_e_feat<-c()
+> 
+>   #for overall
+>   dist1_e<-c()
+>   dist2_e<-c()
+> 
+>   dist1_mink_3<-c()
+>   dist2_mink_3<-c()
+> 
+>   #finding all possible combinations of groups of classes
+>   numb = length(table(labs))
+>   outcomes = c(0,1)
+>   l = rep(list(outcomes), numb)
+>   combos = expand.grid( l )
+> 
+>   #remove last and first which are all one class
+>   combos = combos[-1,]
+>   last = dim(combos)[1]
+>   last2 = last-1
+>   combos = combos[1:last2, ]
+> 
+>   if(numb==2){
++ 
++     m=1
++ 
++   }else{
++ 
++     m = dim(combos)[1]/2
++ 
++   }
+> 
+>   best<-c()
+>   relab<-c(1:10)
+>   errors_train= 0
+>   errors_valid= 0
+> 
+>   errors_train2= 0
+>   errors_valid2= 0
+>   error_vars_best = matrix(nrow=m, ncol=2, data=0)
+> 
+>   i=1
+>   m=1
+> 
+>   #get first possible combination
+>   relab = as.character(combos[i,])
+>   relab[4] = "1"
+>   relab[6] = "1"
+>   relab[7] = "1"
+>   #create loopkup table
+>   lookup <- data.frame(cbind(
++             names(table(labs)),
++             relab
++             ))
+>   #recode the labels to new combination
+>   labs_new = lookup$relab[match(labs, lookup$V1)]
+> 
+>   labs_svm<-as.numeric(labs_new)
+> 
+>   test<-as.data.frame(cbind(labs_svm[train], data[train,]) )
+>   colnames(test)[1]<-"labs_svm"
+> 
+>   valid<-as.data.frame(cbind(labs_svm[-train], data[-train,]) )
+>   colnames(valid)[1]<-"labs_svm"
+> 
+>   #getting counts
+>   lasso_labs = test[,1]
+>   change = which(lasso_labs==2)
+>   lasso_labs[change] = 0
+>   lasso_labs = test[,1]
+>   #getting class sizes
+>   size_1[i]<-var(table(labs[train[which(lasso_labs==1)] ] ))
+>   size_0[i]<-var(table(labs[train[which(lasso_labs==0)] ] ))
+> 
+>   #change NA's to 0's if a single class
+>   if(is.na(size_1[i]) ){
++ 
++     size_1[i]=0
++ 
++   }
+> 
+>   if(is.na(size_0[i]) ){
++ 
++     size_0[i]=0
++ 
++   }
+> 
+>   #doing all possible combinations of variables
+>   v <- dim(test)[2]-1
+>   var_combos<-t(combn(v, 2))+1
+>   ones<-which(test[,1]==1)
+>   twos<-which(test[,1]==2)
+> 
+>   for(j in 1:dim(var_combos)[1]){
++     keep<-c(1,var_combos[j,])
++ 
++     #keeping variables here
++     test2<-test[,keep]
++     valid2<-valid[,keep]
++ 
++     tune.out<-tune(svm, as.factor(labs_svm) ~.,
++               data=test2,
++               kernel='polynomial',
++               ranges=list(cost=c(1), coef0=c(1:3, 50), degree=c(1:3, 5)),
++               validation.x=valid2[,-1],
++               validation.y=as.factor(valid2[,1]),
++               tunecontrol = tune.control(sampling = "fix"))
++ 
++     ypred=predict(tune.out$best.model ,test2)
++     #table(predict=ypred, truth=test$labs_svm)
++     errors_train2[j] = mean(ypred== test2$labs_svm )
++ 
++     ypred=predict(tune.out$best.model ,valid2)
++     #table(predict=ypred, truth=test$labs_svm)
++     errors_valid2[j] = mean(ypred== valid2$labs_svm )
++ 
++     temp_mat<-test2
++     temp_mat[,1]<- (temp_mat[,1]-mean(temp_mat[,1]))/sd(temp_mat[,1])
++     temp_mat[,2]<- (temp_mat[,2]-mean(temp_mat[,2]))/sd(temp_mat[,2])
++ 
++     dist1_e_feat[j]<-mean(dist(temp_mat[ones,-1 ], method="euclidean"))
++     dist2_e_feat[j]<-mean(dist(test2[twos,-1 ], method="euclidean"))
++ 
++   }
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+> 
+>   c_b<-which(errors_train2==max(errors_train2))
+>   abs_diff_dist<-abs(dist1_e_feat-dist2_e_feat)
+>   c_b_choice<-which(abs_diff_dist[c_b]==min(abs_diff_dist[c_b]))
+> 
+>   errors_train[i]<-errors_train2[c_b[c_b_choice]]
+>   errors_valid[i]<-errors_valid2[c_b[c_b_choice]]
+>   error_vars_best[i,]<-var_combos[c_b[c_b_choice],]
+> 
+>   ones<-which(test[,1]==1)
+>   twos<-which(test[,1]==2)
+>   #euclidean
+>   dist1_e[i]<-mean(dist(test[ones,error_vars_best[i,]], method="euclidean" ))
+>   dist2_e[i]<-mean(dist(test[twos,error_vars_best[i,]], method="euclidean" ))
+> 
+>   dist1_mink_3[i]<-mean(dist(test[ones,error_vars_best[i,]],
++                           method="minkowski", p=3))
+>   dist2_mink_3[i]<-mean(dist(test[twos,error_vars_best[i,]],
++                           method="minkowski", p=3 ))
+> 
+>   errors<-cbind(errors_train, errors_valid)
+>   colnames(errors)<-c("Error_train", "Error_valid")
+> 
+>   #finding which errors for training and valid have perfect results
+>   best<- which( (errors_train==1) )
+>   print(best)
+[1] 1
+>   print(errors)
+     Error_train Error_valid
+[1,]           1           1
+> 
+>   variables<- colnames(data[,error_vars_best[best,]-1])
+>   variables
+[1] "SP"           "Eccentricity"
+> 
+> 
+>   #create first meta group of
+>   #round, capsule, oval and rectangle
+>   #vs.
+>   #else
+> 
+>   #cleanign and setup of data
+>   data<- mydata
+>   train<-train_vec
+> 
+>   labs<-data[,1]
+>   data<-data[,-1]
+>   #classes to categorize must be the last column
+>   data<-cbind(data, labs)
+>   #putting training values as first column
+>   data<-cbind(train, data)
+> 
+> 
+>   #########
+> 
+>   keep1<-which(labs==1)
+>   keep2<-which(labs==2)
+>   keep3<-which(labs==3)
+> 
+>   keep4<-which(labs==4)
+>   keep5<-which(labs==5)
+> 
+>   keep6<-which(labs==6)
+>   keep7<-which(labs==7)
+>   keep8<-which(labs==8)
+> 
+>   keep10<-which(labs==10)
+>   keep11<-which(labs==11)
+>   keep12<-which(labs==12)
+> 
+>   keep<-c(keep1, #capsule
++           keep4, #oval
++           keep6, #rect
++           keep7 #round
++           )
+> 
+> 
+>   data1<-data[keep,]
+> 
+>   tree1 <- Node$new("Capsule, Round, Oval, and Rectangle")
+>   TrainDMG(tree1, data1, val )
+[1] 1
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 2
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 3
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 4
+[1] 5
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 6
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 7
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 1
+[1] "1,4"
+[1] "6,7"
+[1] 1
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] "1"
+[1] "4"
+[1] 1
+[1] 1
+[1] "6"
+[1] "7"
+>   print(tree1, "TrainCount", "class1",
++               "class0", "trainError",
++               "validError", "variables",
++               "Cost", "Degree",  "coef0")
+                            levelName TrainCount class1 class0 trainError
+1 Capsule, Round, Oval, and Rectangle       1930                       NA
+2  ¦--1,4                                   1020      1      4  1.0000000
+3  ¦   ¦--1                                   NA                1.0000000
+4  ¦   °--4                                   NA                0.9912791
+5  °--6,7                                    910      6      7  1.0000000
+6      ¦--6                                   NA                1.0000000
+7      °--7                                   NA                1.0000000
+  validError              variables Cost Degree coef0
+1         NA                          NA     NA    NA
+2  1.0000000         SP,Circularity    1      3     3
+3  0.9759036 Eccentricity,Black_Box   10      3     2
+4  0.9912791 Eccentricity,Black_Box   10      3     2
+5  1.0000000         SP,Circularity    1      3     3
+6  1.0000000         SP,Circularity    1      1     1
+7  1.0000000         SP,Circularity    1      1     1
+>   #export_graph(ToDiagrammeRGraph(tree1), "tree1_11_20_num5_0.41.pdf")
+> 
+>   #########
+> 
+>   data2<-data[-keep,]
+> 
+>   tree2 <- Node$new("Else")
+>   TrainDMG(tree2, data2, val )
+[1] 1
+[1] 2
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 3
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 4
+
+WARNING: reaching max number of iterations
+[1] 5
+[1] 6
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 7
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 8
+[1] 9
+[1] 10
+[1] 11
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 12
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 13
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 14
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 15
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 16
+[1] 17
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 18
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 19
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 20
+[1] 21
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 22
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 23
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 24
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 25
+[1] 26
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 27
+
+WARNING: reaching max number of iterations
+[1] 28
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 29
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 30
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 31
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 32
+[1] 33
+
+WARNING: reaching max number of iterations
+[1] 34
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 35
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 36
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 37
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 38
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 39
+
+WARNING: reaching max number of iterations
+[1] 40
+
+WARNING: reaching max number of iterations
+[1] 41
+
+WARNING: reaching max number of iterations
+[1] 42
+
+WARNING: reaching max number of iterations
+[1] 43
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 44
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 45
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 46
+[1] 47
+[1] 48
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 49
+
+WARNING: reaching max number of iterations
+[1] 50
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 51
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 52
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 53
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 54
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 55
+
+WARNING: reaching max number of iterations
+[1] 56
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 57
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 58
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 59
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 60
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 61
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 62
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 63
+[1] 64
+[1] 65
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 66
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 67
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 68
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 69
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 70
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 71
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 72
+[1] 73
+[1] 74
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 75
+[1] 76
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 77
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 78
+
+WARNING: reaching max number of iterations
+[1] 79
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 80
+
+WARNING: reaching max number of iterations
+[1] 81
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 82
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 83
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 84
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 85
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 86
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 87
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 88
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 89
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 90
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 91
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 92
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 93
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 94
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 95
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 96
+
+WARNING: reaching max number of iterations
+[1] 97
+[1] 98
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 99
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 100
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 101
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 102
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 103
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 104
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 105
+[1] 106
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 107
+[1] 108
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 109
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 110
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 111
+[1] 112
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 113
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 114
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 115
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 116
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 117
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 118
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 119
+
+WARNING: reaching max number of iterations
+[1] 120
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 121
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 122
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 123
+
+WARNING: reaching max number of iterations
+[1] 124
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 125
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 126
+
+WARNING: reaching max number of iterations
+
+WARNING: reaching max number of iterations
+[1] 127
+[1] 1
+[1] "2,8,10,11"
+[1] "3,5,9,12"
+[1] 1
+[1] 2
+[1] 3
+[1] 4
+[1] 5
+[1] 6
+[1] 7
+[1] 1
+[1] "8,10"
+[1] "2,11"
+[1] 1
+[1] 1
+[1] "8"
+[1] "10"
+[1] 1
+[1] 1
+[1] "2"
+[1] "11"
+[1] 1
+
+WARNING: reaching max number of iterations
+[1] 2
+
+WARNING: reaching max number of iterations
+[1] 3
+[1] 4
+[1] 5
+
+WARNING: reaching max number of iterations
+[1] 6
+
+WARNING: reaching max number of iterations
+[1] 7
+[1] 1
+[1] "3,5,9"
+[1] "12"
+[1] 1
+[1] 2
+[1] 3
+[1] 1
+[1] "3,5"
+[1] "9"
+[1] 1
+[1] 1
+[1] "3"
+[1] "5"
+>   print(tree2, "TrainCount", "class1",
++               "class0", "trainError",
++               "validError", "variables",
++               "Cost", "Degree",  "coef0")
+           levelName TrainCount class1 class0 trainError validError
+1  Else                      70                       NA         NA
+2   ¦--2,8,10,11             30                        1        1.0
+3   ¦   ¦--8,10              14      8     10          1        1.0
+4   ¦   ¦   ¦--8             NA                        1        1.0
+5   ¦   ¦   °--10            NA                        1        0.4
+6   ¦   °--2,11              16      2     11          1        1.0
+7   ¦       ¦--2             NA                        1        1.0
+8   ¦       °--11            NA                        1        1.0
+9   °--3,5,9,12              40                        1        1.0
+10      ¦--3,5,9             28                        1        1.0
+11      ¦   ¦--3,5           20      3      5          1        1.0
+12      ¦   ¦   ¦--3         NA                        1        1.0
+13      ¦   ¦   °--5         NA                        1        1.0
+14      ¦   °--9              8             9          1        1.0
+15      °--12                12            12          1        1.0
+                  variables Cost Degree coef0
+1                             NA     NA    NA
+2           SP,Eccentricity    1      3     1
+3  Circularity,Eccentricity    1      2     1
+4            SP,Circularity    1      1     1
+5            SP,Circularity    1      1     1
+6  Circularity,Eccentricity    1      2     1
+7  Circularity,Eccentricity    1      2     1
+8  Circularity,Eccentricity    1      2     1
+9           SP,Eccentricity    1      3     1
+10          SP,Eccentricity    1      1     1
+11 Circularity,Eccentricity    1      1     1
+12 Circularity,Eccentricity    1      5    50
+13 Circularity,Eccentricity    1      5    50
+14 Circularity,Eccentricity    1      1     1
+15          SP,Eccentricity    1      1     1
+>   #export_graph(ToDiagrammeRGraph(tree2), "tree2_11_20_num5_0.41.pdf")
+> 
+> 
+> 
+> 
+> 
+> 
+> #
+> 
+> proc.time()
+     user    system   elapsed 
+11392.781     2.202 11399.092 
