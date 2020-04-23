@@ -1,0 +1,850 @@
+
+R version 3.4.4 (2018-03-15) -- "Someone to Lean On"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Previously saved workspace restored]
+
+> #example from data.tree website
+> #https://cran.r-project.org/web/packages/data.tree/vignettes/applications.html
+> 
+> #removes the plotting function, but keeps everything else the same from 2_1_2020 version
+> 
+> rm(list=ls())
+> 
+> #to allow R CMD BATCH to continue if encountering an error
+> library(R.utils)
+Loading required package: R.oo
+Loading required package: R.methodsS3
+R.methodsS3 v1.8.0 (2020-02-14 07:10:20 UTC) successfully loaded. See ?R.methodsS3 for help.
+R.oo v1.23.0 successfully loaded. See ?R.oo for help.
+
+Attaching package: ‘R.oo’
+
+The following object is masked from ‘package:R.methodsS3’:
+
+    throw
+
+The following objects are masked from ‘package:methods’:
+
+    getClasses, getMethods
+
+The following objects are masked from ‘package:base’:
+
+    attach, detach, load, save
+
+R.utils v2.9.0 successfully loaded. See ?R.utils for help.
+
+Attaching package: ‘R.utils’
+
+The following object is masked from ‘package:utils’:
+
+    timestamp
+
+The following objects are masked from ‘package:base’:
+
+    cat, commandArgs, getOption, inherits, isOpen, parse, warnings
+
+> 
+> #number of variables
+> number_vars=3
+> 
+>   val = 0.41
+> 
+>   print('Value of')
+[1] "Value of"
+>   print(val)
+[1] 0.41
+> 
+>   set.seed(45846)
+> 
+>   source('rf_tree_val.r')
+randomForest 4.6-14
+Type rfNews() to see new features/changes/bug fixes.
+Loading required package: lattice
+Loading required package: ggplot2
+
+Attaching package: ‘ggplot2’
+
+The following object is masked from ‘package:randomForest’:
+
+    margin
+
+> 
+>   ##################
+>   #loading data
+>   ##################
+> 
+>   #cleaning data for analysis
+> 
+>   #bird 1
+>   bir11 <-read.table("bir1_SHAPES.txt", sep=",", header=TRUE)
+>   bir14 <-read.table("bir1_EI.txt", sep=",", header=TRUE)
+> 
+>   bir1<-cbind(bir11, bir14)
+> 
+>   #bird 2
+>   bir21 <-read.table("bir2_SHAPES.txt", sep=",", header=TRUE)
+>   bir24 <-read.table("bir2_EI.txt", sep=",", header=TRUE)
+> 
+>   bir2<-cbind(bir21, bir24)
+> 
+>   #bird 3
+>   bir31 <-read.table("bir3_SHAPES.txt", sep=",", header=TRUE)
+>   bir34 <-read.table("bir3_EI.txt", sep=",", header=TRUE)
+> 
+>   bir3<-cbind(bir31, bir34)
+> 
+>   #bird 4
+>   bir41 <-read.table("bir4_SHAPES.txt", sep=",", header=TRUE)
+>   bir44 <-read.table("bir4_EI.txt", sep=",", header=TRUE)
+> 
+>   bir4<-cbind(bir41, bir44)
+> 
+> 
+>   bird<-rbind(bir1, bir2, bir3, bir4)
+> 
+>   #bone
+>   bone1 <-read.table("bone_SHAPES.txt", sep=",", header=TRUE)
+>   bone4 <-read.table("bone_EI.txt", sep=",", header=TRUE)
+> 
+>   bone<-cbind(bone1, bone4)
+> 
+>   #brik
+>   brik1 <-read.table("brik_SHAPES.txt", sep=",", header=TRUE)
+>   brik4 <-read.table("brik_EI.txt", sep=",", header=TRUE)
+> 
+>   brik<-cbind(brik1, brik4)
+> 
+>   #cams
+>   cam11 <-read.table("cams_SHAPES.txt", sep=",", header=TRUE)
+>   cam14 <-read.table("cams_EI.txt", sep=",", header=TRUE)
+> 
+>   cams<-cbind(cam11, cam14)
+> 
+>   #cups
+>   cup1 <-read.table("cups_SHAPES.txt", sep=",", header=TRUE)
+>   cup2 <-read.table("cups_EI.txt", sep=",", header=TRUE)
+> 
+>   cups<-cbind(cup1, cup2)
+> 
+>   #cleaning data for ggplot2 and analysis
+>   labs<-as.factor(c(rep(1, dim(bird)[1]),
++                     rep(2, dim(bone)[1]),
++                     rep(3, dim(brik)[1]),
++                     rep(4, dim(cams)[1]),
++                     rep(5, dim(cups)[1])    ) )
+> 
+>   labs2<-as.factor(c(rep("Bird", dim(bird)[1]),
++                     rep("Bone", dim(bone)[1]),
++                     rep("Brick", dim(brik)[1]),
++                     rep("Camel", dim(cams)[1]),
++                     rep("Cups", dim(cups)[1])    ) )
+> 
+>   #complete data set
+> 
+>   temp<-rbind(bird, bone, brik, cams, cups
++               )
+> 
+>   sp<-temp$white/(temp$white+temp$black)
+> 
+> 
+>   print('##################')
+[1] "##################"
+>   print('# first run')
+[1] "# first run"
+>   print('##################')
+[1] "##################"
+> 
+>   mydata<-cbind(labs, sp, temp)
+> 
+>   colnames(mydata)[c(1:9, 17,18)]<-c("labs_rf", "SP",
++                       "Circ", "Ecc", "E1", "E2",
++                       "Corners", "WhiteBB", "BlackBB",
++                       "White", "Black"
++                       )
+>     mydata<-mydata[,c(-7,-10:-16)]
+> 
+> 
+>   #sample from classes
+>   keep_bird<-which( ( labs== 1) )
+>   bird_rand1<-sample(keep_bird, 80)
+>   train_1<-c(bird_rand1[1:56])
+> 
+>   keep_bone<-which( ( labs== 2) )
+>   bone_rand<-sample(keep_bone, 80)
+>   train_2<-bone_rand[1:56]
+> 
+>   keep_brick<-which( ( labs== 3) )
+>   brick_rand<-sample(keep_brick, 80)
+>   train_3<-brick_rand[1:56]
+> 
+>   keep_cams<-which( ( labs== 4) )
+>   cams_rand1<-sample(keep_cams, 80)
+>   train_4<-c(cams_rand1[1:56])
+> 
+>   keep_cups<-which( ( labs== 5) )
+>   cups_rand<-sample(keep_cups, 80)
+>   train_5<-c(cups_rand[1:56])
+> 
+>   ref_tab_counts<-table(labs)
+> 
+> 
+>   train_vals<-c(train_1, train_2, train_3, train_4,
++                 train_5)
+> 
+>   train_vec<-rep(FALSE, length(labs))
+>   train_vec[train_vals]<-TRUE
+> 
+>   #cleanign and setup of data
+>   data<- mydata
+>   train<-train_vec
+> 
+> 
+>   labs<-as.numeric(data[,1])
+>   data<-data[,-1]
+>   #classes to categorize must be the last column
+>   data<-cbind(data, labs)
+>   #putting training values as first column
+>   data<-cbind(train, data)
+> 
+>   #########
+> 
+> 
+>   tree1 <- Node$new("Bird, Bone, Brick, Camels, and cups")
+>   rslt=withTimeout(expr=TrainDMG(tree1, data, val, number_vars ),
++                  timeout=60*60,
++                 onTimeout=c("silent"))
+[1] 1
+[1] 2
+[1] 3
+[1] 4
+[1] 5
+[1] 6
+[1] 7
+[1] 8
+[1] 9
+[1] 10
+[1] 11
+[1] 12
+[1] 13
+[1] 14
+[1] 15
+[1] 1
+[1] "1,2,3,4"
+[1] "5"
+[1] 1
+[1] 2
+[1] 3
+[1] 4
+[1] 5
+[1] 6
+[1] 7
+[1] 1
+[1] "1,2,3"
+[1] "4"
+[1] 1
+[1] 2
+[1] 3
+[1] 1
+[1] "1"
+[1] "2,3"
+[1] 1
+[1] 1
+[1] "2"
+[1] "3"
+There were 50 or more warnings (use warnings() to see the first 50)
+> 
+> if(is.null(rslt)==TRUE){
++ 
++   next
++ 
++ }
+>   print(tree1, "TrainCount", "class1",
++               "class0", "trainError",
++               "validError", "variables",
++               "mtry", "ntree", "Importance")
+                            levelName TrainCount class1 class0 trainError
+1 Bird, Bone, Brick, Camels, and cups        400                       NA
+2  ¦--1,2,3,4                                320                        1
+3  ¦   ¦--1,2,3                              240                        1
+4  ¦   ¦   ¦--1                               80      1                 1
+5  ¦   ¦   °--2,3                            160      2      3          1
+6  ¦   ¦       ¦--2                           NA                        1
+7  ¦   ¦       °--3                           NA                        1
+8  ¦   °--4                                   80             4          1
+9  °--5                                       80             5          1
+  validError   variables mtry ntree Importance
+1         NA               NA    NA         NA
+2  1.0000000 SP,Circ,Ecc    1   500         NA
+3  1.0000000 SP,Circ,Ecc    1   500         NA
+4  1.0000000 SP,Circ,Ecc    1   500         NA
+5  1.0000000 SP,Circ,Ecc    1   500         NA
+6  1.0000000 SP,Circ,Ecc    1   500         NA
+7  1.0000000 SP,Circ,Ecc    1   500         NA
+8  0.9166667 SP,Circ,Ecc    1   500         NA
+9  1.0000000 SP,Circ,Ecc    1   500         NA
+> 
+> 
+> 
+>   print('##################')
+[1] "##################"
+>   print('# 2nd run')
+[1] "# 2nd run"
+>   print('##################')
+[1] "##################"
+> 
+>   mydata<-cbind(labs, sp, temp)
+> 
+>   colnames(mydata)[c(1:9, 17,18)]<-c("labs_rf", "SP",
++                       "Circ", "Ecc", "E1", "E2",
++                       "Corners", "WhiteBB", "BlackBB",
++                       "White", "Black"
++                       )
+>     mydata<-mydata[,c(-7,-10:-16)]
+> 
+>   #sample from classes
+>   keep_bird<-which( ( labs== 1) )
+>   bird_rand1<-sample(keep_bird, 80)
+>   train_1<-c(bird_rand1[1:56])
+> 
+>   keep_bone<-which( ( labs== 2) )
+>   bone_rand<-sample(keep_bone, 80)
+>   train_2<-bone_rand[1:56]
+> 
+>   keep_brick<-which( ( labs== 3) )
+>   brick_rand<-sample(keep_brick, 80)
+>   train_3<-brick_rand[1:56]
+> 
+>   keep_cams<-which( ( labs== 4) )
+>   cams_rand1<-sample(keep_cams, 80)
+>   train_4<-c(cams_rand1[1:56])
+> 
+>   keep_cups<-which( ( labs== 5) )
+>   cups_rand<-sample(keep_cups, 80)
+>   train_5<-c(cups_rand[1:56])
+> 
+>   ref_tab_counts<-table(labs)
+> 
+> 
+>   train_vals<-c(train_1, train_2, train_3, train_4,
++                 train_5)
+> 
+>   train_vec<-rep(FALSE, length(labs))
+>   train_vec[train_vals]<-TRUE
+> 
+>   #cleanign and setup of data
+>   data<- mydata
+>   train<-train_vec
+> 
+> 
+>   labs<-as.numeric(data[,1])
+>   data<-data[,-1]
+>   #classes to categorize must be the last column
+>   data<-cbind(data, labs)
+>   #putting training values as first column
+>   data<-cbind(train, data)
+> 
+>   #########
+> 
+> 
+>   tree1 <- Node$new("Bird, Bone, Brick, Camels, and cups")
+>   rslt=withTimeout(expr=TrainDMG(tree1, data, val, number_vars ),
++                  timeout=60*60,
++                 onTimeout=c("silent"))
+[1] 1
+[1] 2
+[1] 3
+[1] 4
+[1] 5
+[1] 6
+[1] 7
+[1] 8
+[1] 9
+[1] 10
+[1] 11
+[1] 12
+[1] 13
+[1] 14
+[1] 15
+[1] 1
+[1] "1,2,3,4"
+[1] "5"
+[1] 1
+[1] 2
+[1] 3
+[1] 4
+[1] 5
+[1] 6
+[1] 7
+[1] 1
+[1] "1,2,3"
+[1] "4"
+[1] 1
+[1] 2
+[1] 3
+[1] 1
+[1] "1"
+[1] "2,3"
+[1] 1
+[1] 1
+[1] "2"
+[1] "3"
+There were 50 or more warnings (use warnings() to see the first 50)
+> 
+> if(is.null(rslt)==TRUE){
++ 
++   next
++ 
++ }
+>   print(tree1, "TrainCount", "class1",
++               "class0", "trainError",
++               "validError", "variables",
++               "mtry", "ntree", "importance")
+                            levelName TrainCount class1 class0 trainError
+1 Bird, Bone, Brick, Camels, and cups        400                       NA
+2  ¦--1,2,3,4                                320                        1
+3  ¦   ¦--1,2,3                              240                        1
+4  ¦   ¦   ¦--1                               80      1                 1
+5  ¦   ¦   °--2,3                            160      2      3          1
+6  ¦   ¦       ¦--2                           NA                        1
+7  ¦   ¦       °--3                           NA                        1
+8  ¦   °--4                                   80             4          1
+9  °--5                                       80             5          1
+  validError   variables mtry ntree importance
+1         NA               NA    NA         NA
+2          1 SP,Circ,Ecc    1   500         NA
+3          1 SP,Circ,Ecc    3   500         NA
+4          1 SP,Circ,Ecc    1   500         NA
+5          1 SP,Circ,Ecc    1   500         NA
+6          1 SP,Circ,Ecc    1   500         NA
+7          1 SP,Circ,Ecc    1   500         NA
+8          1 SP,Circ,Ecc    3   500         NA
+9          1 SP,Circ,Ecc    1   500         NA
+> 
+> 
+> print('##################')
+[1] "##################"
+> print('# 3rd run')
+[1] "# 3rd run"
+> print('##################')
+[1] "##################"
+> 
+> mydata<-cbind(labs, sp, temp)
+> 
+> colnames(mydata)[c(1:9, 17,18)]<-c("labs_rf", "SP",
++                     "Circ", "Ecc", "E1", "E2",
++                     "Corners", "WhiteBB", "BlackBB",
++                     "White", "Black"
++                     )
+>   mydata<-mydata[,c(-7,-10:-16)]
+> 
+> #sample from classes
+> keep_bird<-which( ( labs== 1) )
+> bird_rand1<-sample(keep_bird, 80)
+> train_1<-c(bird_rand1[1:56])
+> 
+> keep_bone<-which( ( labs== 2) )
+> bone_rand<-sample(keep_bone, 80)
+> train_2<-bone_rand[1:56]
+> 
+> keep_brick<-which( ( labs== 3) )
+> brick_rand<-sample(keep_brick, 80)
+> train_3<-brick_rand[1:56]
+> 
+> keep_cams<-which( ( labs== 4) )
+> cams_rand1<-sample(keep_cams, 80)
+> train_4<-c(cams_rand1[1:56])
+> 
+> keep_cups<-which( ( labs== 5) )
+> cups_rand<-sample(keep_cups, 80)
+> train_5<-c(cups_rand[1:56])
+> 
+> ref_tab_counts<-table(labs)
+> 
+> 
+> train_vals<-c(train_1, train_2, train_3, train_4,
++               train_5)
+> 
+> train_vec<-rep(FALSE, length(labs))
+> train_vec[train_vals]<-TRUE
+> 
+> #cleanign and setup of data
+> data<- mydata
+> train<-train_vec
+> 
+> 
+> labs<-as.numeric(data[,1])
+> data<-data[,-1]
+> #classes to categorize must be the last column
+> data<-cbind(data, labs)
+> #putting training values as first column
+> data<-cbind(train, data)
+> 
+> #########
+> 
+> 
+> tree1 <- Node$new("Bird, Bone, Brick, Camels, and cups")
+> rslt=withTimeout(expr=TrainDMG(tree1, data, val, number_vars ),
++                  timeout=60*60,
++                 onTimeout=c("silent"))
+[1] 1
+[1] 2
+[1] 3
+[1] 4
+[1] 5
+[1] 6
+[1] 7
+[1] 8
+[1] 9
+[1] 10
+[1] 11
+[1] 12
+[1] 13
+[1] 14
+[1] 15
+[1] 1
+[1] "1,2,3,4"
+[1] "5"
+[1] 1
+[1] 2
+[1] 3
+[1] 4
+[1] 5
+[1] 6
+[1] 7
+[1] 1
+[1] "1,2,3"
+[1] "4"
+[1] 1
+[1] 2
+[1] 3
+[1] 1
+[1] "1"
+[1] "2,3"
+[1] 1
+[1] 1
+[1] "2"
+[1] "3"
+There were 50 or more warnings (use warnings() to see the first 50)
+> 
+> if(is.null(rslt)==TRUE){
++ 
++   next
++ 
++ }
+> print(tree1, "TrainCount", "class1",
++             "class0", "trainError",
++             "validError", "variables",
++             "mtry", "ntree", "Importance")
+                            levelName TrainCount class1 class0 trainError
+1 Bird, Bone, Brick, Camels, and cups        400                       NA
+2  ¦--1,2,3,4                                320                        1
+3  ¦   ¦--1,2,3                              240                        1
+4  ¦   ¦   ¦--1                               80      1                 1
+5  ¦   ¦   °--2,3                            160      2      3          1
+6  ¦   ¦       ¦--2                           NA                        1
+7  ¦   ¦       °--3                           NA                        1
+8  ¦   °--4                                   80             4          1
+9  °--5                                       80             5          1
+  validError   variables mtry ntree Importance
+1         NA               NA    NA         NA
+2  1.0000000 SP,Circ,Ecc    1   500         NA
+3  1.0000000 SP,Circ,Ecc    1   500         NA
+4  1.0000000 SP,Circ,Ecc    1   500         NA
+5  1.0000000 SP,Circ,Ecc    1   500         NA
+6  1.0000000 SP,Circ,Ecc    1   500         NA
+7  1.0000000 SP,Circ,Ecc    1   500         NA
+8  0.8333333 SP,Circ,Ecc    1   500         NA
+9  1.0000000 SP,Circ,Ecc    1   500         NA
+> 
+> print('##################')
+[1] "##################"
+> print('# 4th run')
+[1] "# 4th run"
+> print('##################')
+[1] "##################"
+> 
+> mydata<-cbind(labs, sp, temp)
+> 
+> colnames(mydata)[c(1:9, 17,18)]<-c("labs_rf", "SP",
++                     "Circ", "Ecc", "E1", "E2",
++                     "Corners", "WhiteBB", "BlackBB",
++                     "White", "Black"
++                     )
+>   mydata<-mydata[,c(-7,-10:-16)]
+> 
+> #sample from classes
+> keep_bird<-which( ( labs== 1) )
+> bird_rand1<-sample(keep_bird, 80)
+> train_1<-c(bird_rand1[1:56])
+> 
+> keep_bone<-which( ( labs== 2) )
+> bone_rand<-sample(keep_bone, 80)
+> train_2<-bone_rand[1:56]
+> 
+> keep_brick<-which( ( labs== 3) )
+> brick_rand<-sample(keep_brick, 80)
+> train_3<-brick_rand[1:56]
+> 
+> keep_cams<-which( ( labs== 4) )
+> cams_rand1<-sample(keep_cams, 80)
+> train_4<-c(cams_rand1[1:56])
+> 
+> keep_cups<-which( ( labs== 5) )
+> cups_rand<-sample(keep_cups, 80)
+> train_5<-c(cups_rand[1:56])
+> 
+> ref_tab_counts<-table(labs)
+> 
+> 
+> train_vals<-c(train_1, train_2, train_3, train_4,
++               train_5)
+> 
+> train_vec<-rep(FALSE, length(labs))
+> train_vec[train_vals]<-TRUE
+> 
+> #cleanign and setup of data
+> data<- mydata
+> train<-train_vec
+> 
+> 
+> labs<-as.numeric(data[,1])
+> data<-data[,-1]
+> #classes to categorize must be the last column
+> data<-cbind(data, labs)
+> #putting training values as first column
+> data<-cbind(train, data)
+> 
+> #########
+> 
+> 
+> tree1 <- Node$new("Bird, Bone, Brick, Camels, and cups")
+> rslt=withTimeout(expr=TrainDMG(tree1, data, val, number_vars ),
++                  timeout=60*60,
++                 onTimeout=c("silent"))
+[1] 1
+[1] 2
+[1] 3
+[1] 4
+[1] 5
+[1] 6
+[1] 7
+[1] 8
+[1] 9
+[1] 10
+[1] 11
+[1] 12
+[1] 13
+[1] 14
+[1] 15
+[1] 1
+[1] "1,2,3,4"
+[1] "5"
+[1] 1
+[1] 2
+[1] 3
+[1] 4
+[1] 5
+[1] 6
+[1] 7
+[1] 1
+[1] "1,2,3"
+[1] "4"
+[1] 1
+[1] 2
+[1] 3
+[1] 1
+[1] "1"
+[1] "2,3"
+[1] 1
+[1] 1
+[1] "2"
+[1] "3"
+There were 50 or more warnings (use warnings() to see the first 50)
+> 
+> if(is.null(rslt)==TRUE){
++ 
++   next
++ 
++ }
+> print(tree1, "TrainCount", "class1",
++             "class0", "trainError",
++             "validError", "variables",
++             "mtry", "ntree", "Importance")
+                            levelName TrainCount class1 class0 trainError
+1 Bird, Bone, Brick, Camels, and cups        400                       NA
+2  ¦--1,2,3,4                                320                        1
+3  ¦   ¦--1,2,3                              240                        1
+4  ¦   ¦   ¦--1                               80      1                 1
+5  ¦   ¦   °--2,3                            160      2      3          1
+6  ¦   ¦       ¦--2                           NA                        1
+7  ¦   ¦       °--3                           NA                        1
+8  ¦   °--4                                   80             4          1
+9  °--5                                       80             5          1
+  validError   variables mtry ntree Importance
+1         NA               NA    NA         NA
+2          1 SP,Circ,Ecc    1   500         NA
+3          1 SP,Circ,Ecc    3   500         NA
+4          1 SP,Circ,Ecc    1   500         NA
+5          1 SP,Circ,Ecc    1   500         NA
+6          1 SP,Circ,Ecc    1   500         NA
+7          1 SP,Circ,Ecc    1   500         NA
+8          1 SP,Circ,Ecc    3   500         NA
+9          1 SP,Circ,Ecc    1   500         NA
+> 
+> print('##################')
+[1] "##################"
+> print('# 5th run')
+[1] "# 5th run"
+> print('##################')
+[1] "##################"
+> 
+> mydata<-cbind(labs, sp, temp)
+> 
+> colnames(mydata)[c(1:9, 17,18)]<-c("labs_rf", "SP",
++                     "Circ", "Ecc", "E1", "E2",
++                     "Corners", "WhiteBB", "BlackBB",
++                     "White", "Black"
++                     )
+>   mydata<-mydata[,c(-7,-10:-16)]
+> 
+> #sample from classes
+> keep_bird<-which( ( labs== 1) )
+> bird_rand1<-sample(keep_bird, 80)
+> train_1<-c(bird_rand1[1:56])
+> 
+> keep_bone<-which( ( labs== 2) )
+> bone_rand<-sample(keep_bone, 80)
+> train_2<-bone_rand[1:56]
+> 
+> keep_brick<-which( ( labs== 3) )
+> brick_rand<-sample(keep_brick, 80)
+> train_3<-brick_rand[1:56]
+> 
+> keep_cams<-which( ( labs== 4) )
+> cams_rand1<-sample(keep_cams, 80)
+> train_4<-c(cams_rand1[1:56])
+> 
+> keep_cups<-which( ( labs== 5) )
+> cups_rand<-sample(keep_cups, 80)
+> train_5<-c(cups_rand[1:56])
+> 
+> ref_tab_counts<-table(labs)
+> 
+> 
+> train_vals<-c(train_1, train_2, train_3, train_4,
++               train_5)
+> 
+> train_vec<-rep(FALSE, length(labs))
+> train_vec[train_vals]<-TRUE
+> 
+> #cleanign and setup of data
+> data<- mydata
+> train<-train_vec
+> 
+> 
+> labs<-as.numeric(data[,1])
+> data<-data[,-1]
+> #classes to categorize must be the last column
+> data<-cbind(data, labs)
+> #putting training values as first column
+> data<-cbind(train, data)
+> 
+> #########
+> 
+> 
+> tree1 <- Node$new("Bird, Bone, Brick, Camels, and cups")
+> rslt=withTimeout(expr=TrainDMG(tree1, data, val, number_vars ),
++                  timeout=60*60,
++                 onTimeout=c("silent"))
+[1] 1
+[1] 2
+[1] 3
+[1] 4
+[1] 5
+[1] 6
+[1] 7
+[1] 8
+[1] 9
+[1] 10
+[1] 11
+[1] 12
+[1] 13
+[1] 14
+[1] 15
+[1] 1
+[1] "1,2,3,4"
+[1] "5"
+[1] 1
+[1] 2
+[1] 3
+[1] 4
+[1] 5
+[1] 6
+[1] 7
+[1] 1
+[1] "1,2,3"
+[1] "4"
+[1] 1
+[1] 2
+[1] 3
+[1] 1
+[1] "1"
+[1] "2,3"
+[1] 1
+[1] 1
+[1] "2"
+[1] "3"
+There were 50 or more warnings (use warnings() to see the first 50)
+> 
+> if(is.null(rslt)==TRUE){
++ 
++   next
++ 
++ }
+> print(tree1, "TrainCount", "class1",
++             "class0", "trainError",
++             "validError", "variables",
++             "mtry", "ntree", "Importance")
+                            levelName TrainCount class1 class0 trainError
+1 Bird, Bone, Brick, Camels, and cups        400                       NA
+2  ¦--1,2,3,4                                320                        1
+3  ¦   ¦--1,2,3                              240                        1
+4  ¦   ¦   ¦--1                               80      1                 1
+5  ¦   ¦   °--2,3                            160      2      3          1
+6  ¦   ¦       ¦--2                           NA                        1
+7  ¦   ¦       °--3                           NA                        1
+8  ¦   °--4                                   80             4          1
+9  °--5                                       80             5          1
+  validError   variables mtry ntree Importance
+1         NA               NA    NA         NA
+2          1 SP,Circ,Ecc    1   500         NA
+3          1 SP,Circ,Ecc    3   500         NA
+4          1 SP,Circ,Ecc    1   500         NA
+5          1 SP,Circ,Ecc    1   500         NA
+6          1 SP,Circ,Ecc    1   500         NA
+7          1 SP,Circ,Ecc    1   500         NA
+8          1 SP,Circ,Ecc    3   500         NA
+9          1 SP,Circ,Ecc    1   500         NA
+> 
+> 
+> #
+> 
+> proc.time()
+    user   system  elapsed 
+4767.885  121.028 4889.642 
