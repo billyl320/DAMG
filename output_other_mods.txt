@@ -1,7 +1,7 @@
 
 R version 3.4.4 (2018-03-15) -- "Someone to Lean On"
 Copyright (C) 2018 The R Foundation for Statistical Computing
-Platform: x86_64-apple-darwin15.6.0 (64-bit)
+Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -16,6 +16,8 @@ Type 'contributors()' for more information and
 Type 'demo()' for some demos, 'help()' for on-line help, or
 'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
+
+[Previously saved workspace restored]
 
 > library(xtable) #for table creation for latex
 > library(ggplot2)#for graphics
@@ -297,6 +299,7 @@ predict   1   2   3   4   5   6   7   8   9  10  11  12
 > set.seed(379737)
 > 
 > mean_prec<-c()
+> mean_recall<-c()
 > 
 > keep_rect<-which( ( labs== 6) )
 > keep_circ<-which( ( labs== 7) )
@@ -455,10 +458,15 @@ Levels:
 > 
 > diag = diag(cm) # number of correctly classified instances per class
 > colsums = apply(cm, 2, sum) # number of predictions per class
+> rowsums = apply(cm, 1, sum) # number of instances per class
+> 
 > precision = diag / colsums
+> recall = diag / rowsums
 > 
-> mean_prec[1]<-mean(precision)
-> 
+> mean_prec[1]<-mean(precision)[-8]
+> mean_recall[1]<-mean(recall)[-8]
+> mean_recall
+[1] NaN
 > ########
 > #radial
 > ########
@@ -522,9 +530,14 @@ Levels:
 > 
 > diag = diag(cm) # number of correctly classified instances per class
 > colsums = apply(cm, 2, sum) # number of predictions per class
+> rowsums = apply(cm, 1, sum) # number of instances per class
 > precision = diag / colsums
+> recall = diag / rowsums
 > 
-> mean_prec[2]<-mean(precision)
+> mean_prec[2]<-mean(precision)[-8]
+> mean_recall[2]<-mean(recall)[-8]
+> mean_recall
+[1] NaN NaN
 > 
 > ########
 > #sigmoid
@@ -590,9 +603,14 @@ Levels:
 > 
 > diag = diag(cm) # number of correctly classified instances per class
 > colsums = apply(cm, 2, sum) # number of predictions per class
+> rowsums = apply(cm, 1, sum) # number of instances per class
 > precision = diag / colsums
+> recall = diag / rowsums
 > 
-> mean_prec[3]<-mean(precision)
+> mean_prec[3]<-mean(precision)[-8]
+> mean_recall[3]<-mean(recall)[-8]
+> mean_recall
+[1] NaN NaN NaN
 > 
 > #############
 > #naive bayes
@@ -630,9 +648,14 @@ call       4     -none- call
 > 
 > diag = diag(cm) # number of correctly classified instances per class
 > colsums = apply(cm, 2, sum) # number of predictions per class
+> rowsums = apply(cm, 1, sum) # number of instances per class
 > precision = diag / colsums
+> recall = diag / rowsums
 > 
-> mean_prec[4]<-mean(precision)
+> mean_prec[4]<-mean(precision)[-8]
+> mean_recall[4]<-mean(recall)[-8]
+> mean_recall
+[1]       NaN       NaN       NaN 0.7054629
 > 
 > #############
 > # LDA
@@ -685,10 +708,14 @@ lda.class  1  2  3  4  5  6  7  8  9 10 11 12
 > 
 > diag = diag(cm) # number of correctly classified instances per class
 > colsums = apply(cm, 2, sum) # number of predictions per class
+> rowsums = apply(cm, 1, sum) # number of instances per class
 > precision = diag / colsums
+> recall = diag / rowsums
 > 
-> mean_prec[5]<-mean(precision)
-> 
+> mean_prec[5]<-mean(precision)[-8]
+> mean_recall[5]<-mean(recall)[-8]
+> mean_recall
+[1]       NaN       NaN       NaN 0.7054629 0.7658038
 > #############
 > # BRF
 > #############
@@ -742,11 +769,14 @@ brf.class  1  2  3  4  5  6  7  8  9 10 11 12
 > 
 > diag = diag(cm) # number of correctly classified instances per class
 > colsums = apply(cm, 2, sum) # number of predictions per class
+> rowsums = apply(cm, 1, sum) # number of instances per class
 > precision = diag / colsums
+> recall = diag / rowsums
 > 
-> mean_prec[6]<-mean(precision)
-> 
-> 
+> mean_prec[6]<-mean(precision)[-8]
+> mean_recall[6]<-mean(recall)[-8]
+> mean_recall
+[1]       NaN       NaN       NaN 0.7054629 0.7658038       NaN
 > 
 > #########
 > # ultima
@@ -754,7 +784,7 @@ brf.class  1  2  3  4  5  6  7  8  9 10 11 12
 > 
 > xtable( t(as.matrix(mean_prec)), digits=3 )
 % latex table generated in R 3.4.4 by xtable 1.8-4 package
-% Mon Mar 30 15:09:31 2020
+% Wed Apr 22 15:40:00 2020
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrrrrrr}
@@ -765,9 +795,22 @@ brf.class  1  2  3  4  5  6  7  8  9 10 11 12
    \hline
 \end{tabular}
 \end{table}
+> xtable( t(as.matrix(mean_recall)), digits=3 )
+% latex table generated in R 3.4.4 by xtable 1.8-4 package
+% Wed Apr 22 15:40:00 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrrrr}
+  \hline
+ & 1 & 2 & 3 & 4 & 5 & 6 \\ 
+  \hline
+1 &  &  &  & 0.705 & 0.766 &  \\ 
+   \hline
+\end{tabular}
+\end{table}
 > 
 > #
 > 
 > proc.time()
    user  system elapsed 
- 16.141   0.212  16.496 
+ 11.426   0.083  11.485 

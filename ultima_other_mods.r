@@ -229,6 +229,7 @@ mean(ypred==as.factor(as.numeric(labs_qda)))
 set.seed(379737)
 
 mean_prec<-c()
+mean_recall<-c()
 
 keep_rect<-which( ( labs== 6) )
 keep_circ<-which( ( labs== 7) )
@@ -337,10 +338,14 @@ cm = table(predict=ypred, truth=mat$labs_svm)
 
 diag = diag(cm) # number of correctly classified instances per class
 colsums = apply(cm, 2, sum) # number of predictions per class
+rowsums = apply(cm, 1, sum) # number of instances per class
+
 precision = diag / colsums
+recall = diag / rowsums
 
-mean_prec[1]<-mean(precision)
-
+mean_prec[1]<-mean(precision)[-8]
+mean_recall[1]<-mean(recall)[-8]
+mean_recall
 ########
 #radial
 ########
@@ -376,9 +381,13 @@ cm = table(predict=ypred, truth=mat$labs_svm)
 
 diag = diag(cm) # number of correctly classified instances per class
 colsums = apply(cm, 2, sum) # number of predictions per class
+rowsums = apply(cm, 1, sum) # number of instances per class
 precision = diag / colsums
+recall = diag / rowsums
 
-mean_prec[2]<-mean(precision)
+mean_prec[2]<-mean(precision)[-8]
+mean_recall[2]<-mean(recall)[-8]
+mean_recall
 
 ########
 #sigmoid
@@ -415,9 +424,13 @@ cm = table(predict=ypred, truth=mat$labs_svm)
 
 diag = diag(cm) # number of correctly classified instances per class
 colsums = apply(cm, 2, sum) # number of predictions per class
+rowsums = apply(cm, 1, sum) # number of instances per class
 precision = diag / colsums
+recall = diag / rowsums
 
-mean_prec[3]<-mean(precision)
+mean_prec[3]<-mean(precision)[-8]
+mean_recall[3]<-mean(recall)[-8]
+mean_recall
 
 #############
 #naive bayes
@@ -447,9 +460,13 @@ cm = table(predict=ypred, truth=mat$labs_svm)
 
 diag = diag(cm) # number of correctly classified instances per class
 colsums = apply(cm, 2, sum) # number of predictions per class
+rowsums = apply(cm, 1, sum) # number of instances per class
 precision = diag / colsums
+recall = diag / rowsums
 
-mean_prec[4]<-mean(precision)
+mean_prec[4]<-mean(precision)[-8]
+mean_recall[4]<-mean(recall)[-8]
+mean_recall
 
 #############
 # LDA
@@ -485,10 +502,13 @@ cm = table(predict=ypred$class, truth=mat$labs_svm)
 
 diag = diag(cm) # number of correctly classified instances per class
 colsums = apply(cm, 2, sum) # number of predictions per class
+rowsums = apply(cm, 1, sum) # number of instances per class
 precision = diag / colsums
+recall = diag / rowsums
 
-mean_prec[5]<-mean(precision)
-
+mean_prec[5]<-mean(precision)[-8]
+mean_recall[5]<-mean(recall)[-8]
+mean_recall
 #############
 # BRF
 #############
@@ -525,16 +545,19 @@ cm = table(predict=ypred, truth=mat$labs_svm)
 
 diag = diag(cm) # number of correctly classified instances per class
 colsums = apply(cm, 2, sum) # number of predictions per class
+rowsums = apply(cm, 1, sum) # number of instances per class
 precision = diag / colsums
+recall = diag / rowsums
 
-mean_prec[6]<-mean(precision)
-
-
+mean_prec[6]<-mean(precision)[-8]
+mean_recall[6]<-mean(recall)[-8]
+mean_recall
 
 #########
 # ultima
 #########
 
 xtable( t(as.matrix(mean_prec)), digits=3 )
+xtable( t(as.matrix(mean_recall)), digits=3 )
 
 #
